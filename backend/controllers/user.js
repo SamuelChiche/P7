@@ -75,5 +75,26 @@ exports.findAll = (req, res, next) => {
     })
 };
 
+exports.updateOne = (req, res, next) => {
+    let id = req.body.id;
+    let name = req.body.name;
+    let email = req.body.email;
+
+    if(!id || !name || !email) {
+        res.status(400).json({ error : "error"})
+    }
+    sql.query('UPDATE user SET name = ?, email = ? WHERE id = ?', [name, email, id], function (error, results, fields){
+        if (error){
+            res.status(400).json({ error })
+        } else {
+            if (results.changedRows === 0){
+                res.status(400).json({ error : "User not found or data are same" })
+            } else {
+                res.status(201).json({data : results})
+            }
+        }
+    })
+};
+
 
             
