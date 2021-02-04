@@ -96,5 +96,21 @@ exports.updateOne = (req, res, next) => {
     })
 };
 
-
+exports.deleteOne = (req, res, next) =>{
+    let id = req.body.id;
+    if(!id) {
+        res.status(400).json({error : "Id not provided"})
+    }
+    sql.query('DELETE FROM user WHERE id = ?', [id], (error, results, fields)=> {
+        if (error){
+            res.status(400).json({error});
+        } else {
+            if (results.affectedRows === 0){
+                res.status(400).json({ error : "User not found"})
+            } else {
+                res.status(200).json({ message : "User successfully deleted"})
+            }
+        }
+    })
+};
             
