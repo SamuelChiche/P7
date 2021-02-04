@@ -1,6 +1,7 @@
 <template>
+
   <div class="login container">
-    <h1>This is my login page</h1>
+    <router-link to="/signup"></router-link>
     <form v-on:submit.prevent>
       <div class="form-group">
         <label for="inputEmail">Email</label>
@@ -25,7 +26,7 @@
         />
       </div>
 
-      <button @click="formSubmit()" class="btn btn-primary">Login</button>
+      <button @click="formSubmit()" class="btn btn-primary">Se connecter</button>
     </form>
     <h3 class="text-center">{{message}}</h3>
   </div>

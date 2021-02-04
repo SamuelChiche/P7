@@ -1,11 +1,8 @@
 <template>
     <div class="sign-up container">
-        <h1>
-            This is my signup page
-        </h1>
             <form v-on:submit.prevent>
       <div class="form-group">
-        <label for="inputPassword">Name</label>
+        <label for="inputName">Name</label>
         <input
           type="name"
           class="form-control"
@@ -38,7 +35,7 @@
         />
       </div>
 
-      <button @click="formSubmit()" class="btn btn-primary">Sign in</button>
+      <button @click="formSubmit()" class="btn btn-primary">S'inscrire</button>
     </form>
     <h3 class="text-center">{{message}}</h3>
     </div>
