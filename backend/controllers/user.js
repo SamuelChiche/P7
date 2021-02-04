@@ -25,7 +25,7 @@ exports.login = (req, res, next) => {
     let email = req.body.email;
     let password = req.body.password;
     sql.query('SELECT * FROM user WHERE email = ?',
-        [email], function (error, results, fields) {
+        [email], (error, results, fields) => {
             if (error) {
                 res.status(400).json({ error })
             } else {
@@ -44,4 +44,22 @@ exports.login = (req, res, next) => {
             }
         }
     )
-}
+};
+
+exports.findById = (req, res, next ) => {
+    let id = req.params.id;
+    sql.query(`SELECT * FROM user WHERE id = ?`, id, (error, results, fields) => {
+        if (error) {
+          res.status(400).json({ error })
+        } else {
+            if (results === undefined || results.length == 0){
+                res.status(400).json({ error : "User not found"})
+            } else {
+                res.status(200).json({data : results[0]});
+            }
+        }
+    })
+};
+
+
+            
