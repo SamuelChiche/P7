@@ -61,5 +61,19 @@ exports.findById = (req, res, next ) => {
     })
 };
 
+exports.findAll = (req, res, next) => {
+    sql.query('SELECT * FROM user', (error, results, fields) => {
+        if (error){
+            res.status(400).json({ error })
+        } else {
+            if (results === undefined || results.length == 0){
+                res.status(400).json({ error : "User table is empty" })
+            } else {
+                res.status(200).json({data : results})
+            }
+        }
+    })
+};
+
 
             
