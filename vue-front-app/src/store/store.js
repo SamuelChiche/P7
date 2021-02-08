@@ -5,19 +5,37 @@ import axios from 'axios'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-    status: '',
-    token: localStorage.getItem('token') || '',
-    user : {}
-  },
-  mutations: {
-
-  },
-  actions: {
-
-  },
-  getters : {
-
-  }
+    state: {
+        status: '',
+        token: localStorage.getItem('token') || '',
+        user: {}
+    },
+    mutations: {
+      
+    },
+    actions : {
+        login({commit}, user){
+            return new Promise((resolve, reject) => {
+                commit('auth_request')
+                axios({url : 'http://localhost:3000/user/login', data : user, method: 'POST'})
+                    .then(res => {
+                        const token = res.data.token
+                        const user = res.data.user
+                        localStorage.setItem('token', token)
+                        axios.defaults.headers.common['Authorization'] = token
+                        commit('auth_success', token, user)
+                        resolve(res)
+                    })
+                    .catch(err => {
+                        commit('auth_error')
+                        localStorage.removeItem('token')
+                        reject(err)
+                    })
+            })
+        },
+    },
+    getters : {
+    
+    },
 })
 
