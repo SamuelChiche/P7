@@ -1,12 +1,12 @@
 <template>
     <div class="sign-up container">
-            <form v-on:submit.prevent>
+            <form v-on:submit.prevent="register">
       <div class="form-group">
         <label for="inputName">Name</label>
         <input
           type="name"
           class="form-control"
-          id="inputName"
+          id="name"
           placeholder="Name"
           required
           v-model="name"
@@ -17,7 +17,7 @@
         <input
           type="email"
           class="form-control"
-          id="inputEmail"
+          id="email"
           placeholder="Email"
           required
           v-model="email"
@@ -28,40 +28,51 @@
         <input
           type="password"
           class="form-control"
-          id="inputPassword"
+          id="password"
           placeholder="Password"
           required
           v-model="password"
         />
       </div>
+      <div class="form-group">
+        <label for="inputPassword">Password confirmation</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password-confirm"
+          placeholder="Repeat Password"
+          required
+          v-model="password_confirmation"
+        />
+      </div>
 
-      <button @click="formSubmit()" class="btn btn-primary">S'inscrire</button>
+      <button type="submit" class="btn btn-primary">S'inscrire</button>
     </form>
     <h3 class="text-center">{{message}}</h3>
     </div>
 </template>
 <script>
-import axios from 'axios';
 export default {
-    name : "Signup",
-    data : function(){
+    data (){
         return {
-            name : null,
-            email : null,
-            password : null,
-            message : null
+            name : '',
+            email : '',
+            password : '',
+            password_confirmation : '',
+            message : ''
         }
     },
     methods : {
-        formSubmit : function (){
-            const data = {
-            name : this.name,
-            email : this.email,
-            password : this.password
+      register : function() {
+        let data = {
+          name : this.name,
+          email : this.email,
+          password : this.password
         }
-        axios.post("http://localhost:3000/user/signup", data)
-            .then(res => this.message = res.data.message)
-        }
-    },
+        this.$store.dispatch('register', data)
+          .then(()=> this.$router.push('/'))
+          .catch(err => console.log(err))
+      }
+    }
 }
 </script>

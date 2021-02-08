@@ -2,7 +2,7 @@
 
   <div class="login container">
     <router-link to="/signup"></router-link>
-    <form v-on:submit.prevent>
+    <form v-on:submit.prevent="login">
       <div class="form-group">
         <label for="inputEmail">Email</label>
         <input
@@ -10,6 +10,7 @@
           class="form-control"
           id="inputEmail"
           placeholder="Email"
+          autofocus
           required
           v-model="email"
         />
@@ -26,17 +27,16 @@
         />
       </div>
 
-      <button @click="formSubmit()" class="btn btn-primary">Se connecter</button>
+      <button type="submit" class="btn btn-primary">Se connecter</button>
     </form>
     <h3 class="text-center">{{message}}</h3>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
 export default {
     name : "Login",
-    data : function(){
+    data (){
         return {
             email : null,
             password : null,
@@ -44,15 +44,13 @@ export default {
         }
     },
     methods : {
-        formSubmit : function (){
-            const data = {
-            email : this.email,
-            password : this.password
-        }
-        axios.post("http://localhost:3000/user/login", data)
-          .then(res => this.message = res.data.message)
-          .catch(res => this.message = res)
-        }
+      login : function(){
+        let email = this.email
+        let password = this.password
+        this.$store.dispatch('login', {email, password})
+          .then(()=> this.$router.push('/userboard'))
+          .catch(err => console.log(err))
+      }
     },
 }
 </script>
