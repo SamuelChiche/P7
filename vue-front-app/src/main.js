@@ -3,12 +3,23 @@ import App from './App.vue'
 import router from './router'
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
+import store from './store/store';
+
+Vue.config.devtools = true
 
 Vue.prototype.$http = axios
 
+const token = localStorage.getItem('user-token')
+if (token){
+  Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+}
+
 Vue.config.productionTip = false
+
+
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')
