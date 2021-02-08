@@ -15,8 +15,8 @@ export default {
         background-color:#091F43 ;
         text-align: center;
         img{
-            width: 150px;
-            height: 150px;
+            width: 250px;
+            height: 80px;
         }    
     }
 </style>
