@@ -48,7 +48,9 @@
 
       <button type="submit" class="btn btn-primary">S'inscrire</button>
     </form>
-    <h3 class="text-center">{{message}}</h3>
+      <div>
+          Déjà inscrit ? <router-link to="/login">Se connecter</router-link>
+    </div>
     </div>
 </template>
 <script>
@@ -70,7 +72,7 @@ export default {
           password : this.password
         }
         this.$store.dispatch('register', data)
-          .then(()=> this.$router.push('/'))
+          .then(()=> this.$router.push('/userboard'))
           .catch(err => console.log(err))
       }
     }

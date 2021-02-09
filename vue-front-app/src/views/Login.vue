@@ -1,5 +1,4 @@
 <template>
-
   <div class="login container">
     <router-link to="/signup"></router-link>
     <form v-on:submit.prevent="login">
@@ -29,7 +28,9 @@
 
       <button type="submit" class="btn btn-primary">Se connecter</button>
     </form>
-    <h3 class="text-center">{{message}}</h3>
+    <div>
+          Pas encore de compte ? <router-link to="/signup">S'inscrire</router-link>
+    </div>
   </div>
 </template>
 

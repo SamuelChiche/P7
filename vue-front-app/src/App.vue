@@ -2,7 +2,7 @@
   <div id="app">
     <Header/>
     <div id="nav">
-      <router-link to="/">Home</router-link> | <span v-if="isLoggedIn"> <a @click="logout">Logout</a></span>
+       <span v-if="isLoggedIn"> <a @click="logout">Logout</a></span>
     <router-view/>
     </div>
   </div>

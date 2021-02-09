@@ -1,0 +1,8 @@
+const dbconnection = {
+  HOST: "host",
+  USER: "user",
+  PASSWORD: "password",
+  DB: "database_name",
+};
+
+module.exports = dbconnection;

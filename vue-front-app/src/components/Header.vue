@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <img src="../assets/icon-left-font-monochrome-white.png" alt="">
+        <router-link to="/"><img src="../assets/icon-left-font-monochrome-white.png" alt=""></router-link>
     </div>
 </template>
 
