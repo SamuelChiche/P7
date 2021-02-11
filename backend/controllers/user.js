@@ -1,6 +1,7 @@
 const sql = require('../models/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const User = require('../models/user.models')
 
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
@@ -67,70 +68,66 @@ exports.login = (req, res, next) => {
     )
 };
 
-exports.findById = (req, res, next ) => {
+exports.getOneUser = (req, res, next) => {
     let id = req.params.id;
-    sql.query(`SELECT * FROM users WHERE id = ?`, id, (error, results, fields) => {
-        if (error) {
-          res.status(400).json({ error })
-        } else {
-            if (results === undefined || results.length == 0){
-                res.status(400).json({ error : "User not found"})
+    User.findById(id, (err, data) => {
+        if (err){
+            if (err.kind == "not_found"){
+                res.status(404).json({err : 'User not found !'})
             } else {
-                res.status(200).json({data : results[0]});
+                res.status(500).json({err : "There was a problem retrieving this user !"})
             }
+        } else {
+            res.status(200).json({data})
         }
     })
 };
 
-exports.findAll = (req, res, next) => {
-    sql.query('SELECT * FROM users', (error, results, fields) => {
-        if (error){
-            res.status(400).json({ error })
+exports.getAllUsers = (req, res, next) => {
+    User.getAll((err, data) => {
+        if (err) {
+            res.status(500).json({message : 'Some error occured while retrieving users !'})
         } else {
-            if (results === undefined || results.length == 0){
-                res.status(400).json({ error : "User table is empty" })
-            } else {
-                res.status(200).json({data : results})
-            }
+            res.status(200).json({data})
         }
     })
 };
 
-exports.updateOne = (req, res, next) => {
-    let id = req.body.id;
+exports.updateOneUser = (req, res, next) => {
+    let id = req.params.id;
     let name = req.body.name;
     let email = req.body.email;
 
     if(!id || !name || !email) {
         res.status(400).json({ error : "error"})
     }
-    sql.query('UPDATE users SET name = ?, email = ? WHERE id = ?', [name, email, id], function (error, results, fields){
-        if (error){
-            res.status(400).json({ error })
-        } else {
-            if (results.changedRows === 0){
-                res.status(400).json({ error : "User not found or data are same" })
+    User.findById(id, new User(req.body), (err, data) => {
+        if (err) {
+            if  (err.kind === "not found") {
+                res.status(404).send({message : 'User not found'})
             } else {
-                res.status(201).json({data : results})
+                res.status(500).send({message : 'Error updating user'})
             }
+        } else {
+            res.status(201).json(data)
         }
     })
 };
 
-exports.deleteOne = (req, res, next) =>{
-    let id = req.body.id;
+exports.deleteOneUser = (req, res, next) =>{
+    let id = req.params.id;
     if(!id) {
         res.status(400).json({error : "Id not provided"})
     }
-    sql.query('DELETE FROM users WHERE id = ?', [id], (error, results, fields)=> {
-        if (error){
-            res.status(400).json({error});
-        } else {
-            if (results.affectedRows === 0){
-                res.status(400).json({ error : "User not found" })
+    User.deleteById(id, (err, data) => {
+        if (err) {
+            if  (err.kind === "not found") {
+                res.status(404).send({message : 'User not found'})
             } else {
-                res.status(200).json({ message : "User successfully deleted" })
-            } 
+                res.status(500).send({message : 'Error deleting user'})
+            }
+        } else {
+            res.status(200).json(data)
         }
     })
 };
