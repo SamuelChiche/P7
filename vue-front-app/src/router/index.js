@@ -9,25 +9,43 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {
+      alreadyAuth: true
+    }
   },
   {
     path: '/login',
     name: 'Login',
-    component:() => import('../views/Login.vue'),
+    meta: {
+      alreadyAuth: true
+    },
+    component: () => import('../views/Login.vue'),
   },
   {
     path: '/signup',
     name: 'Signup',
+    meta: {
+      alreadyAuth: true
+    },
     component: () => import('../views/Signup.vue'),
+
   },
   {
     path: '/userboard',
     name: 'userboard',
-    meta : {
+    meta: {
       requiresAuth: true
     },
     component: () => import('../views/UserBoard.vue'),
+  },
+  {
+    path: '/userprofile/:id',
+    name: 'userprofile',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('../views/userprofile.vue')
   }
 ]
 
@@ -38,16 +56,22 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if(to.matched.some(record => record.meta.requiresAuth)){
-    if(store.getters.isLoggedIn == true){
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.isLoggedIn == true) {
       next()
       return
-    } 
-      next({path: '/login'})
-    
+    }
+    next({ path: '/login' })
+
+  } else if (to.matched.some(record => record.meta.alreadyAuth)) {
+    if (store.getters.isLoggedIn == true) {
+      next({ path: '/userboard' })
+    } else {
+      next()
+    }
   } else {
     next()
-  } 
+  }
 })
 
 export default router
