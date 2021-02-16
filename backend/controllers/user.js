@@ -88,7 +88,7 @@ exports.getAllUsers = (req, res, next) => {
         if (err) {
             res.status(500).send({message : 'Some error occured while retrieving users !'})
         } else {
-            res.status(200).send({data})
+            res.status(200).send(data)
         }
     })
 };
