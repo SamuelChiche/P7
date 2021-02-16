@@ -48,15 +48,16 @@
 <script>
 import axios from "axios";
 export default {
-  name: "Post",
+  name: "Userpost",
   data() {
     return {
       posts_list: [],
     };
   },
   mounted() {
+    let userId = this.$route.params.id
     axios
-      .get("http://localhost:3000/post")
+      .get("http://localhost:3000/post/user/" + userId)
       .then((res) => (this.posts_list = res.data));
   },
 };
