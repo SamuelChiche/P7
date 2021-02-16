@@ -23,3 +23,18 @@ exports.getAllPosts = (req, res, next) => {
         }
     })
 };
+
+exports.getPostsFromUser = (req, res, next) => {
+    let id = req.params.id
+    Post.getAllFromUser(id, (err, data) => {
+        if (err) {
+            if (err.kind == "not_found"){
+                res.status(404).send({err : 'User not found !'})
+            } else {
+                res.status(500).send({err : "There was a problem retrieving this user's post !"})
+            }
+        } else {
+            res.status(200).send(data)
+        }
+    })
+};

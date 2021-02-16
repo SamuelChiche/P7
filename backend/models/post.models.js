@@ -25,8 +25,14 @@ Post.getAll = (result) => {
     })
 };
 
-Post.getAllFromUser = (result) => {
-    sql.query('SELECT * FROM posts INNER JOIN users ON posts.user_id = users.id WHERE id = ?', id , (error, results, fields))
+Post.getAllFromUser = (id, result) => {
+    sql.query('SELECT * FROM posts INNER JOIN users ON posts.user_id = users.id WHERE id = ?', id , (error, results, fields) => {
+        if (error){
+            result(null, error)
+        } else {
+            result(null, results)
+        }
+    })
 }
 
 module.exports = Post;
