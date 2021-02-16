@@ -14,7 +14,7 @@ exports.signup = (req, res, next) => {
             sql.query('INSERT INTO users SET ?',
                 user, function (error, results, fields) {
                     if (error) {
-                        res.status(400).json({ error : "There was a problem registering the user" })
+                        res.status(400).send({ error : "There was a problem registering the user" })
                     } else {
                         sql.query('SELECT * FROM users WHERE email = ?', [req.body.email], (err, user) =>{
                             if (err){
@@ -37,7 +37,7 @@ exports.login = (req, res, next) => {
     sql.query('SELECT * FROM users WHERE email = ?',
         [email], (error, results, fields) => {
             if (error) {
-                res.status(400).json({ error })
+                res.status(400).send({ error })
             } else {
                 if (results.length > 0) {
                     bcrypt.compare(password, results[0].password)
@@ -47,11 +47,11 @@ exports.login = (req, res, next) => {
                             } else {
                                 sql.query('SELECT * FROM users WHERE email = ?', [req.body.email], (err, user) =>{
                                     if (err){
-                                        return res.status(500).json({ err : "There was a problem finding the user"})
+                                        return res.status(500).send({ err : "There was a problem finding the user"})
                                     }
                                     else{
                                         let token = jwt.sign({id: user.id}, "secret_key", {expiresIn : 86400});
-                                        res.status(200).send({ auth: true, token: token, user: user});
+                                        res.status(200).send({ auth: true, token: token, user: user[0]});
                                     }
                                 })
                             }
@@ -73,12 +73,12 @@ exports.getOneUser = (req, res, next) => {
     User.findById(id, (err, data) => {
         if (err){
             if (err.kind == "not_found"){
-                res.status(404).json({err : 'User not found !'})
+                res.status(404).send({err : 'User not found !'})
             } else {
-                res.status(500).json({err : "There was a problem retrieving this user !"})
+                res.status(500).send({err : "There was a problem retrieving this user !"})
             }
         } else {
-            res.status(200).json({data})
+            res.status(200).send(data)
         }
     })
 };
@@ -86,9 +86,9 @@ exports.getOneUser = (req, res, next) => {
 exports.getAllUsers = (req, res, next) => {
     User.getAll((err, data) => {
         if (err) {
-            res.status(500).json({message : 'Some error occured while retrieving users !'})
+            res.status(500).send({message : 'Some error occured while retrieving users !'})
         } else {
-            res.status(200).json({data})
+            res.status(200).send({data})
         }
     })
 };
@@ -109,7 +109,7 @@ exports.updateOneUser = (req, res, next) => {
                 res.status(500).send({message : 'Error updating user'})
             }
         } else {
-            res.status(201).json(data)
+            res.status(201).send(data)
         }
     })
 };
