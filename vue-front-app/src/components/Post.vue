@@ -1,6 +1,7 @@
 <template>
-    <div class="card gedf-card my-5">
-          <div class="card-header">
+  <div class="post">
+    <div  class="card gedf-card my-5" v-for="(post, index) in posts_list" v-bind:key="index">
+          <div class="card-header ">
             <div class="d-flex justify-content-between align-items-center">
               <div class="d-flex justify-content-between align-items-center">
                 <div class="mr-2">
@@ -12,7 +13,7 @@
                   />
                 </div>
                 <div class="ml-2">
-                  <div class="h5 m-0">{{username}}</div>
+                  <div class="h5 m-0">{{post.user_id}}</div>
                 </div>
               </div>
               <div>
@@ -32,22 +33,28 @@
           </div>
           <div class="card-body">
             <p class="card-text">
-              {{posttext}}
+              {{post.text}}
             </p>
           </div>
           <div class="card-footer">
             <a href="#" class="card-link float-right"> Like</a>
           </div>
         </div>
+  </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
     name : 'Post',
     data () {
         return{
-            username : 'Lorem ipsum',
-            posttext : 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quod tempora hic dolores neque sed itaque repudiandae ipsum? Accusantium ducimus in voluptas perspiciatis veritatis ab tenetur.'      
+          posts_list : [],      
         }
+    },
+    mounted (){
+      axios.get('http://localhost:3000/post')
+        .then(res => this.posts_list = res.data
+        )
     }
 }
 </script>

@@ -1,10 +1,12 @@
 <template>
   <div class="userboard">
-    <button @click="getUserId">Page user</button>
+    <button @click="getUserId" class="btn btn-success">Mon profil</button>
     <div class="container-fluid gedf-wrapper">
+      
       <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6 gedf-main">
+          
           <Makeapost />
           <Post />
         </div>
