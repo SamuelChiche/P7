@@ -9,9 +9,10 @@ Vue.config.devtools = true
 
 Vue.prototype.$http = axios
 
-const token = localStorage.getItem('user-token')
+const token = store.state.token
+
 if (token){
-  Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+  Vue.prototype.$http.defaults.headers.common['Authorization'] = 'Bearer' + ' ' + token
 }
 
 Vue.config.productionTip = false

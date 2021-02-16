@@ -1,6 +1,6 @@
 <template>
-    <div class="sign-up container">
-            <form v-on:submit.prevent="register">
+  <div class="sign-up container">
+    <form v-on:submit.prevent="register">
       <div class="form-group">
         <label for="inputName">Name</label>
         <input
@@ -48,33 +48,34 @@
 
       <button type="submit" class="btn btn-primary">S'inscrire</button>
     </form>
-      <div>
-          Déjà inscrit ? <router-link to="/login">Se connecter</router-link>
+    <div>
+      Déjà inscrit ? <router-link to="/login">Se connecter</router-link>
     </div>
-    </div>
+  </div>
 </template>
 <script>
 export default {
-    data (){
-        return {
-            name : '',
-            email : '',
-            password : '',
-            password_confirmation : '',
-            message : ''
-        }
+  data() {
+    return {
+      name: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+      message: "",
+    };
+  },
+  methods: {
+    register: function () {
+      let data = {
+        name: this.name,
+        email: this.email,
+        password: this.password,
+      };
+      this.$store
+        .dispatch("register", data)
+        .then(() => this.$router.push("/userboard"))
+        .catch((err) => console.log(err));
     },
-    methods : {
-      register : function() {
-        let data = {
-          name : this.name,
-          email : this.email,
-          password : this.password
-        }
-        this.$store.dispatch('register', data)
-          .then(()=> this.$router.push('/userboard'))
-          .catch(err => console.log(err))
-      }
-    }
-}
+  },
+};
 </script>
