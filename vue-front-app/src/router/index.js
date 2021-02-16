@@ -40,12 +40,12 @@ const routes = [
     component: () => import('../views/UserBoard.vue'),
   },
   {
-    path: '/userprofile/:id',
-    name: 'userprofile',
+    path: '/account/:id',
+    name: 'account',
     meta: {
       requiresAuth: true
     },
-    component: () => import('../views/userprofile.vue')
+    component: () => import('../views/Account.vue')
   }
 ]
 
