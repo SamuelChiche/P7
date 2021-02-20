@@ -17,7 +17,7 @@
               />
             </div>
             <div class="ml-2">
-              <div class="h5 m-0">{{ post.user_id }}</div>
+              <div class="h5 m-0"><router-link :to="{ name : 'account', params : {id : post.user_id}}">{{ post.user_id }}</router-link></div>
             </div>
           </div>
           <div>
@@ -57,7 +57,9 @@ export default {
   mounted() {
     axios
       .get("http://localhost:3000/post")
-      .then((res) => (this.posts_list = res.data));
+      .then((res) => {(this.posts_list = res.data)})
+      .catch(err => err)
   },
+  
 };
 </script>
