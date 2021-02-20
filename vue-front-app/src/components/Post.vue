@@ -17,7 +17,12 @@
               />
             </div>
             <div class="ml-2">
-              <div class="h5 m-0"><router-link :to="{ name : 'account', params : {id : post.user_id}}">{{ post.user_id }}</router-link></div>
+              <div class="h5 m-0">
+                <router-link
+                  :to="{ name: 'account', params: { id: post.user_id } }"
+                  >{{ post.user_id }}</router-link
+                >
+              </div>
             </div>
           </div>
           <div>
@@ -30,6 +35,19 @@
                 aria-haspopup="true"
                 aria-expanded="false"
               ></button>
+              <div class="dropdown-menu">
+                <li></li>
+                <li v-if="post.user_id == JSON.parse($store.state.user).id" class="dropdown-item">
+                  <a @click="modifyPost(post.post_id)">
+                    Modifier
+                  </a>
+                </li>
+                <li v-if="post.user_id == JSON.parse($store.state.user).id" class="dropdown-item">
+                  <a @click="deletePost(post.post_id)">
+                    Supprimer <font-awesome-icon icon="trash" />
+                  </a>
+                </li>
+              </div>
             </div>
           </div>
         </div>
@@ -49,6 +67,8 @@
 import axios from "axios";
 export default {
   name: "Post",
+  components: {
+  },
   data() {
     return {
       posts_list: [],
@@ -57,9 +77,15 @@ export default {
   mounted() {
     axios
       .get("http://localhost:3000/post")
-      .then((res) => {(this.posts_list = res.data)})
-      .catch(err => err)
+      .then((res) => {
+        this.posts_list = res.data;
+      })
+      .catch((err) => err);
   },
-  
+  methods: {
+    deletePost: function (id) {
+      axios.delete("http://localhost:3000/post/" + id);
+    },
+  },
 };
 </script>
