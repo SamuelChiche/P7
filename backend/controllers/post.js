@@ -38,3 +38,21 @@ exports.getPostsFromUser = (req, res, next) => {
         }
     })
 };
+
+exports.deleteOne = (req, res, next) => {
+    let id = req.params.id;
+    if(!id) {
+        res.status(400).json({error : "Id not provided"})
+    }
+    Post.deleteById(id, (err, data) => {
+        if (err) {
+            if  (err.kind === "not found") {
+                res.status(404).send({message : 'User not found'})
+            } else {
+                res.status(500).send({message : 'Error deleting user'})
+            }
+        } else {
+            res.status(200).json(data)
+        }
+    })
+}
