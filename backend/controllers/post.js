@@ -3,7 +3,9 @@ const Post = require("../models/post.models");
 exports.create = (req, res, next) => {
     const new_post = {
         "user_id" : req.body.user_id,
-        "text" : req.body.text
+        "text" : req.body.text,
+        "title" : req.body.title,
+        "user_name" : req.body.user_name,
     }
     Post.create(new_post, (err, post) => {
         if (err) {

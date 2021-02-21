@@ -2,7 +2,9 @@ const sql = require('./db')
 
 const Post = (post) => {
     this.user.id = post.user_id,
-    this.text = post.text
+    this.text = post.text,
+    this.title = post.title,
+    this.user_name = post.user_name
 };
 
 Post.create = (newPost, result) => {
