@@ -17,6 +17,16 @@ Post.create = (newPost, result) => {
     })
 };
 
+Post.findById = (id, result) => {
+    sql.query(`SELECT * FROM posts WHERE id = ?`, id, (error, results, fields) => {
+        if (error) {
+            result(null, error)
+        } else {
+            result(null, results)
+        }
+    })
+};
+
 Post.getAll = (result) => {
     sql.query('SELECT * FROM posts', (error, results, fields) => {
         if (error){
