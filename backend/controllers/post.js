@@ -16,6 +16,21 @@ exports.create = (req, res, next) => {
     })
 };
 
+exports.getOnePost = (req, res, next) => {
+    let id = req.params.id;
+    Post.findById(id, (err, data) => {
+        if (err){
+            if (err.kind == "not_found"){
+                res.status(404).send({err : 'Post not found !'})
+            } else {
+                res.status(500).send({err : "There was a problem retrieving this post !"})
+            }
+        } else {
+            res.status(200).send(data)
+        }
+    })
+};
+
 exports.getAllPosts = (req, res, next) => {
     Post.getAll((err, data) => {
         if (err) {
