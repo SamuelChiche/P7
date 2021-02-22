@@ -1,5 +1,11 @@
 <template>
-    <a @click="getUserId" class="dropdown-item">Mon profil</a>
+    <button @click="getUserId"
+            class="btn btn-secondary mr-2"
+            type="button"
+            id="myProfile"
+          >
+            <font-awesome-icon icon="user" />
+    </button>
 </template>
 <script>
 export default {

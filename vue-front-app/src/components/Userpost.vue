@@ -17,7 +17,7 @@
               />
             </div>
             <div class="ml-2">
-              <div class="h5 m-0">{{ post.user_id }}</div>
+              <div class="h5 m-0">{{ post.user_name }}</div>
             </div>
           </div>
           <div>

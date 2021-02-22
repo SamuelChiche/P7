@@ -1,13 +1,18 @@
 <template>
   <div class="header">
     <div class="header container">
-      <nav class="navbar">
+      <nav class="navbar justify-content-between">
         <router-link to="/" class="navbar-brand"
           ><img src="../assets/icon-left-font-monochrome-white.png" alt=""
         /></router-link>
 
-        <div class="dropdown" v-if="isLoggedIn">
-          <button
+        <div class="navbar" v-if="isLoggedIn">
+          <a @click="$router.push('/userboard')" class="btn btn-secondary mr-2">
+            Accueil
+          </a>
+          <MyAccount />
+          <div class="dropdown" >
+           <a
             class="btn btn-secondary dropdown-toggle"
             type="button"
             id="dropdownMenuButton"
@@ -16,11 +21,11 @@
             aria-expanded="false"
           >
             <font-awesome-icon icon="cog" />
-          </button>
+          </a>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <Logout />
-            <MyAccount />
           </div>
+        </div>
         </div>
       </nav>
     </div>

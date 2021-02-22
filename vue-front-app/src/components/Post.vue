@@ -20,7 +20,7 @@
               <div class="h5 m-0">
                 <router-link
                   :to="{ name: 'account', params: { id: post.user_id } }"
-                  >{{ post.user_id }}</router-link
+                  >{{ post.user_name }}</router-link
                 >
               </div>
             </div>
@@ -37,12 +37,16 @@
               ></button>
               <div class="dropdown-menu">
                 <li></li>
-                <li v-if="post.user_id == JSON.parse($store.state.user).id" class="dropdown-item">
-                  <a @click="modifyPost(post.post_id)">
-                    Modifier
-                  </a>
+                <li
+                  v-if="post.user_id == JSON.parse($store.state.user).id"
+                  class="dropdown-item"
+                >
+                  <a @click="modifyPost(post.post_id)"> Modifier </a>
                 </li>
-                <li v-if="post.user_id == JSON.parse($store.state.user).id" class="dropdown-item">
+                <li
+                  v-if="post.user_id == JSON.parse($store.state.user).id"
+                  class="dropdown-item"
+                >
                   <a @click="deletePost(post.post_id)">
                     Supprimer <font-awesome-icon icon="trash" />
                   </a>
@@ -53,6 +57,14 @@
         </div>
       </div>
       <div class="card-body">
+        <div class="text-muted h7 mb-2">
+          {{post.created_at}}
+        </div>
+        <a class="card-link" href="#">
+          <h5 class="card-title">
+            {{ post.title }}
+          </h5>
+        </a>
         <p class="card-text">
           {{ post.text }}
         </p>
@@ -67,8 +79,7 @@
 import axios from "axios";
 export default {
   name: "Post",
-  components: {
-  },
+  components: {},
   data() {
     return {
       posts_list: [],
