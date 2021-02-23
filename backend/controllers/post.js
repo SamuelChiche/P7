@@ -1,4 +1,5 @@
 const Post = require("../models/post.models");
+const sql = require('../models/db');
 
 exports.create = (req, res, next) => {
     const new_post = {
@@ -70,6 +71,89 @@ exports.deleteOne = (req, res, next) => {
             }
         } else {
             res.status(200).json(data)
+        }
+    })
+}
+
+exports.vote =  (req, res, next) => {
+    let id = req.params.id;
+    Post.findById(id, (err , data) =>{
+        if (err){
+            res.status(404).send({err : 'Post not found !'}) 
+        } else {
+            let like = req.body.like;
+            switch (like) {
+                case 1 :
+                    const upvotes = {
+                        "fk_user_id" : req.body.user_id,
+                        "fk_post_id" : req.params.id,
+                        "pvote_score" : +1,
+                    }
+                    sql.query('INSERT INTO pvotes SET ?', upvotes, (error, results, fields) => {
+                        if (error) {
+                            res.status(400).send(error)
+                        } else {
+                            res.status(200).send({message : "Success"})
+                        }
+                    })
+                break ;
+                case 0 : 
+                    sql.query('DELETE FROM pvotes WHERE fk_user_id = ? and fk_post_id = ?', [req.body.user_id, req.params.id], ( error, results, fields) => {
+                        if (error) {
+                            res.status(400).send(error)
+                        } else {
+                            res.status(200).send({ message : "Success"})
+                            
+                        }
+                    })
+                break ;
+
+                case  -1 :
+                    const downvotes = {
+                        "fk_user_id" : req.body.user_id,
+                        "fk_post_id" : req.params.id,
+                        "pvote_score" : -1,
+                    }
+                    sql.query('INSERT INTO pvotes SET ?', downvotes, (error, results, fields) => {
+                        if (error) {
+                            res.status(400).send(error)
+                        } else {
+                            res.status(200).send({message : "Success"})
+                        }
+                    })
+                break;
+            }
+        }
+    } )
+}
+exports.userDownote = (req, res, next ) => {
+    user_id = req.body.user_id
+    sql.query('SELECT * FROM pvotes WHERE fk_user_id = ? and fk_post_id = ? and pvote_score = -1', [user_id, req.params.id], (error, results, fields) => {
+        if (error) {
+            res.status(400).send(error) 
+        } else {
+            if (JSON.stringify(results[0]) === undefined) {
+                res.status(200).send({'result': false})
+            }
+             else {
+                res.status(200).send({'result': true})
+            }
+        }
+    })
+};
+
+exports.userUpvote = (req, res, next) => {
+    user_id = req.body.user_id
+    sql.query('SELECT * FROM pvotes WHERE fk_user_id = ? and fk_post_id = ? and pvote_score = 1', [user_id, req.params.id], (error, results, fields) => {
+        if (error) {
+            res.status(400).send(error) 
+        } else {
+            if (JSON.stringify(results[0]) === undefined) {
+                res.status(200).send({'result': false})
+            }
+             else {
+                res.status(200).send({'result': true})
+            }
         }
     })
 }
