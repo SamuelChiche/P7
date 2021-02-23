@@ -70,7 +70,9 @@
         </p>
       </div>
       <div class="card-footer">
-        <a href="#" class="card-link float-right"> Like</a>
+        <button @click="upvotePost(post.post_id)" class="btn" ><font-awesome-icon icon="chevron-up" /></button>
+        {{post.post_score}}
+        <button @click="downvotePost(post.post_id)" class="btn" ><font-awesome-icon icon="chevron-down" /></button>
       </div>
     </div>
   </div>
@@ -97,6 +99,21 @@ export default {
     deletePost: function (id) {
       axios.delete("http://localhost:3000/post/" + id);
     },
+    upvotePost: function (id) {
+      let user_id = JSON.parse(this.$store.state.user).id
+      let like = 1;
+
+      axios.post("http://localhost:3000/post/" + id + "/like", {like, user_id})
+
+    },
+    downvotePost: function(id) {
+      let user_id = JSON.parse(this.$store.state.user).id
+      let like = -1
+      axios.post("http://localhost:3000/post/" + id + "/like", {like, user_id})
+    }
   },
+  computed : {
+    
+  }
 };
 </script>
