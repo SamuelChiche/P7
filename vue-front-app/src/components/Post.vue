@@ -58,21 +58,28 @@
       </div>
       <div class="card-body">
         <div class="text-muted h7 mb-2">
-          {{post.created_at}}
+          {{ post.created_at }}
         </div>
-        <a class="card-link" href="#">
+        <router-link
+          :to="{ name: 'upost', params: { id: post.post_id } }"
+          class="card-link"
+        >
           <h5 class="card-title">
             {{ post.title }}
           </h5>
-        </a>
+        </router-link>
         <p class="card-text">
           {{ post.text }}
         </p>
       </div>
       <div class="card-footer">
-        <button @click="upvotePost(post.post_id)" class="btn" ><font-awesome-icon icon="chevron-up" /></button>
-        {{post.post_score}}
-        <button @click="downvotePost(post.post_id)" class="btn" ><font-awesome-icon icon="chevron-down" /></button>
+        <button @click="upvotePost(post.post_id)" class="btn">
+          <font-awesome-icon icon="chevron-up" />
+        </button>
+        {{ post.post_score }}
+        <button @click="downvotePost(post.post_id)" class="btn">
+          <font-awesome-icon icon="chevron-down" />
+        </button>
       </div>
     </div>
   </div>
@@ -88,32 +95,39 @@ export default {
     };
   },
   mounted() {
-    axios
+    this.getAllPosts()
+  },
+  methods: {
+    getAllPosts : function () {
+      axios
       .get("http://localhost:3000/post")
       .then((res) => {
         this.posts_list = res.data;
       })
       .catch((err) => err);
-  },
-  methods: {
+    },
     deletePost: function (id) {
-      axios.delete("http://localhost:3000/post/" + id);
+      axios.delete("http://localhost:3000/post/" + id)
+        .then(window.location.reload())
     },
     upvotePost: function (id) {
-      let user_id = JSON.parse(this.$store.state.user).id
+      let user_id = JSON.parse(this.$store.state.user).id;
       let like = 1;
 
-      axios.post("http://localhost:3000/post/" + id + "/like", {like, user_id})
-
+      axios.post("http://localhost:3000/post/" + id + "/like", {
+        like,
+        user_id,
+      });
     },
-    downvotePost: function(id) {
-      let user_id = JSON.parse(this.$store.state.user).id
-      let like = -1
-      axios.post("http://localhost:3000/post/" + id + "/like", {like, user_id})
-    }
+    downvotePost: function (id) {
+      let user_id = JSON.parse(this.$store.state.user).id;
+      let like = -1;
+      axios.post("http://localhost:3000/post/" + id + "/like", {
+        like,
+        user_id,
+      });
+    },
   },
-  computed : {
-    
-  }
+  computed: {},
 };
 </script>
