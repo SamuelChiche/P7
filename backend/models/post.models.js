@@ -28,7 +28,7 @@ Post.findById = (id, result) => {
 };
 
 Post.getAll = (result) => {
-    sql.query('SELECT * FROM posts', (error, results, fields) => {
+    sql.query('SELECT * FROM posts ORDER BY created_at DESC', (error, results, fields) => {
         if (error){
             result(null, error)
         } else {
