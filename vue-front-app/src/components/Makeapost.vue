@@ -12,7 +12,19 @@
               aria-labelledby="posts-tab"
             >
               <div class="form-group">
+                <label for="inputTitle">Title</label>
+                <input
+                  type="title"
+                  class="form-control"
+                  id="inputTitle"
+                  placeholder="Titre"
+                  required
+                  v-model="title"
+                />
+              </div>
+              <div class="form-group">
                 <label class="sr-only" for="message">post</label>
+
                 <textarea
                   class="form-control"
                   id="message"
@@ -44,13 +56,21 @@ export default {
   data() {
     return {
       text: "",
+      title: "",
     };
   },
   methods: {
     createPost: function () {
+      let title = this.title;
       let text = this.text;
       let user_id = JSON.parse(this.$store.state.user).id;
-      axios.post("http://localhost:3000/post", { text, user_id });
+      let user_name = JSON.parse(this.$store.state.user).name;
+      axios.post("http://localhost:3000/post", {
+        text,
+        user_id,
+        user_name,
+        title,
+      });
     },
   },
 };

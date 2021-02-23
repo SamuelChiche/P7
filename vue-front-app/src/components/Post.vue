@@ -17,7 +17,12 @@
               />
             </div>
             <div class="ml-2">
-              <div class="h5 m-0">{{ post.user_id }}</div>
+              <div class="h5 m-0">
+                <router-link
+                  :to="{ name: 'account', params: { id: post.user_id } }"
+                  >{{ post.user_name }}</router-link
+                >
+              </div>
             </div>
           </div>
           <div>
@@ -30,17 +35,51 @@
                 aria-haspopup="true"
                 aria-expanded="false"
               ></button>
+              <div class="dropdown-menu">
+                <li></li>
+                <li
+                  v-if="post.user_id == JSON.parse($store.state.user).id"
+                  class="dropdown-item"
+                >
+                  <a @click="modifyPost(post.post_id)"> Modifier </a>
+                </li>
+                <li
+                  v-if="post.user_id == JSON.parse($store.state.user).id"
+                  class="dropdown-item"
+                >
+                  <a @click="deletePost(post.post_id)">
+                    Supprimer <font-awesome-icon icon="trash" />
+                  </a>
+                </li>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="card-body">
+        <div class="text-muted h7 mb-2">
+          {{ post.created_at }}
+        </div>
+        <router-link
+          :to="{ name: 'upost', params: { id: post.post_id } }"
+          class="card-link"
+        >
+          <h5 class="card-title">
+            {{ post.title }}
+          </h5>
+        </router-link>
         <p class="card-text">
           {{ post.text }}
         </p>
       </div>
       <div class="card-footer">
-        <a href="#" class="card-link float-right"> Like</a>
+        <button @click="upvotePost(post.post_id)" class="btn">
+          <font-awesome-icon icon="chevron-up" />
+        </button>
+        {{ post.post_score }}
+        <button @click="downvotePost(post.post_id)" class="btn">
+          <font-awesome-icon icon="chevron-down" />
+        </button>
       </div>
     </div>
   </div>
@@ -49,15 +88,46 @@
 import axios from "axios";
 export default {
   name: "Post",
+  components: {},
   data() {
     return {
       posts_list: [],
     };
   },
   mounted() {
-    axios
-      .get("http://localhost:3000/post")
-      .then((res) => (this.posts_list = res.data));
+    this.getAllPosts()
   },
+  methods: {
+    getAllPosts : function () {
+      axios
+      .get("http://localhost:3000/post")
+      .then((res) => {
+        this.posts_list = res.data;
+      })
+      .catch((err) => err);
+    },
+    deletePost: function (id) {
+      axios.delete("http://localhost:3000/post/" + id)
+        .then(window.location.reload())
+    },
+    upvotePost: function (id) {
+      let user_id = JSON.parse(this.$store.state.user).id;
+      let like = 1;
+
+      axios.post("http://localhost:3000/post/" + id + "/like", {
+        like,
+        user_id,
+      });
+    },
+    downvotePost: function (id) {
+      let user_id = JSON.parse(this.$store.state.user).id;
+      let like = -1;
+      axios.post("http://localhost:3000/post/" + id + "/like", {
+        like,
+        user_id,
+      });
+    },
+  },
+  computed: {},
 };
 </script>

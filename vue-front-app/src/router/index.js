@@ -46,6 +46,14 @@ const routes = [
       requiresAuth: true
     },
     component: () => import('../views/Account.vue')
+  },
+  {
+    path: '/upost/:id',
+    name: 'upost',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('../views/Upost.vue')
   }
 ]
 

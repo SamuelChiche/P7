@@ -37,11 +37,13 @@ export default {
   },
   mounted: function () {
     let userId = this.$route.params.id;
-    axios.get("http://localhost:3000/user/" + userId).then((res) => {
-      const userData = res.data[0];
-      this.name = userData.name;
-      this.email = userData.email;
-    });
+    axios.get("http://localhost:3000/user/" + userId)
+      .then((res) => {
+        const userData = res.data[0]
+        this.name = userData.name
+        this.email = userData.email
+      })
+      .catch(err => err)
   },
 };
 </script>

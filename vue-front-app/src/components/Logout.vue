@@ -1,12 +1,12 @@
 <template>
-  <button
+  <a
     v-if="isLoggedIn"
     @click="logout"
-    class="btn btn-primary float-right"
     id="logout_button"
+    class="dropdown-item"
   >
     Se déconnecter
-  </button>
+  </a>
 </template>
 
 <script>
@@ -19,13 +19,11 @@ export default {
   },
   methods: {
     logout: function () {
-      this.$store.dispatch("logout").then(() => this.$router.push("/login"));
+      this.$store.dispatch("logout")
+        .then(() => this.$router.push("/login"));
     },
   },
 };
 </script>
 <style lang="scss">
-#logout_button {
-  margin-top: 20px;
-}
 </style>

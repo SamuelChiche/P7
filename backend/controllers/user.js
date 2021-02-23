@@ -18,7 +18,7 @@ exports.signup = (req, res, next) => {
                     } else {
                         sql.query('SELECT * FROM users WHERE email = ?', [req.body.email], (err, user) =>{
                             if (err){
-                                return res.status(500).json({ err : "There was a problem finding the user"})
+                                return res.status(500).send({ err : "There was a problem finding the user"})
                             }
                             else{
                                 let token = jwt.sign({id: user.id}, "secret_key", {expiresIn : 86400});
@@ -131,4 +131,5 @@ exports.deleteOneUser = (req, res, next) =>{
         }
     })
 };
+
             
