@@ -9,7 +9,7 @@
               class="tab-pane fade show active"
               id="posts"
               role="tabpanel"
-              aria-labelledby="posts-tab"
+              aria-label="posts-tab"
             >
               <div class="form-group">
                 <label for="inputTitle">Title</label>
