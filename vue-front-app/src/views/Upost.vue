@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import PostServices from '../services/PostServices'
 export default {
     data (){
         return {
@@ -75,9 +75,9 @@ export default {
         this.getPost()
     },
     methods : {
-        getPost : function() {
+        getPost () {
             let id = this.$route.params.id
-            axios.get('http://localhost:3000/post/' + id)
+            PostServices.getOne(id)
                 .then((res) => {
                     this.posts = res.data
                     console.log(this.posts)

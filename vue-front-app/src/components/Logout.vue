@@ -10,20 +10,23 @@
 </template>
 
 <script>
+
 export default {
   name: "Logout",
   computed: {
-    isLoggedIn: function () {
+    isLoggedIn () {
       return this.$store.getters.isLoggedIn;
     },
   },
   methods: {
-    logout: function () {
+    logout () {
       this.$store.dispatch("logout")
         .then(() => this.$router.push("/login"));
     },
   },
 };
 </script>
+
 <style lang="scss">
+
 </style>

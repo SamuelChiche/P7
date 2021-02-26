@@ -33,8 +33,10 @@
 </template>
 
 <script>
+
 import Logout from "../components/Logout";
 import MyAccount from "../components/MyAccount";
+
 export default {
   name: "Header",
   components: {
@@ -42,7 +44,7 @@ export default {
     MyAccount,
   },
   computed: {
-    isLoggedIn: function () {
+    isLoggedIn () {
       return this.$store.getters.isLoggedIn;
     },
   },

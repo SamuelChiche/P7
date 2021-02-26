@@ -50,7 +50,7 @@
 
 
 <script>
-import axios from "axios";
+import PostServices from '../services/PostServices';
 export default {
   name: "Makeapost",
   data() {
@@ -60,17 +60,14 @@ export default {
     };
   },
   methods: {
-    createPost: function () {
-      let title = this.title;
-      let text = this.text;
-      let user_id = JSON.parse(this.$store.state.user).id;
-      let user_name = JSON.parse(this.$store.state.user).name;
-      axios.post("http://localhost:3000/post", {
-        text,
-        user_id,
-        user_name,
-        title,
-      });
+    createPost(){
+      let data = {
+        title : this.title,
+        text : this.text,
+        user_id : JSON.parse(this.$store.state.user).id,
+        user_name : JSON.parse(this.$store.state.user).name,
+      }
+      PostServices.create(data)
     },
   },
 };

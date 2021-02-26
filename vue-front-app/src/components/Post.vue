@@ -34,7 +34,6 @@
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
-                aria-label="dropdown-menu"
               ></button>
               <div class="dropdown-menu">
                 <li></li>
@@ -86,7 +85,8 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+import axios from 'axios';
+import PostServices from "../services/PostServices"
 export default {
   name: "Post",
   components: {},
@@ -99,22 +99,20 @@ export default {
     this.getAllPosts()
   },
   methods: {
-    getAllPosts : function () {
-      axios
-      .get("http://localhost:3000/post")
+    getAllPosts () {
+      PostServices.getAll()
       .then((res) => {
         this.posts_list = res.data;
       })
       .catch((err) => err);
     },
-    deletePost: function (id) {
-      axios.delete("http://localhost:3000/post/" + id)
+    deletePost (id) {
+      PostServices.delete(id)
         .then(window.location.reload())
     },
     upvotePost: function (id) {
       let user_id = JSON.parse(this.$store.state.user).id;
       let like = 1;
-
       axios.post("http://localhost:3000/post/" + id + "/like", {
         like,
         user_id,
