@@ -22,7 +22,7 @@ exports.signup = (req, res, next) => {
                             }
                             else{
                                 let token = jwt.sign({id: user.id}, "secret_key", {expiresIn : 86400});
-                                res.status(200).send({ auth: true, token: token, user: user});
+                                res.status(200).send({ auth: true, token: token, user: user[0]});
                             }
                         })
                     }

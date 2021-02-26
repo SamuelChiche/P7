@@ -87,7 +87,7 @@ exports.vote =  (req, res, next) => {
                     const upvotes = {
                         "fk_user_id" : req.body.user_id,
                         "fk_post_id" : req.params.id,
-                        "pvote_score" : +1,
+                        "pvote_up" : +1,
                     }
                     sql.query('INSERT INTO pvotes SET ?', upvotes, (error, results, fields) => {
                         if (error) {
@@ -112,7 +112,7 @@ exports.vote =  (req, res, next) => {
                     const downvotes = {
                         "fk_user_id" : req.body.user_id,
                         "fk_post_id" : req.params.id,
-                        "pvote_score" : -1,
+                        "pvote_down" : +1,
                     }
                     sql.query('INSERT INTO pvotes SET ?', downvotes, (error, results, fields) => {
                         if (error) {
@@ -128,7 +128,7 @@ exports.vote =  (req, res, next) => {
 }
 exports.userDownote = (req, res, next ) => {
     user_id = req.body.user_id
-    sql.query('SELECT * FROM pvotes WHERE fk_user_id = ? and fk_post_id = ? and pvote_score = -1', [user_id, req.params.id], (error, results, fields) => {
+    sql.query('SELECT * FROM pvotes WHERE fk_user_id = ? and fk_post_id = ? and pvote_down = 1', [user_id, req.params.id], (error, results, fields) => {
         if (error) {
             res.status(400).send(error) 
         } else {
@@ -144,7 +144,7 @@ exports.userDownote = (req, res, next ) => {
 
 exports.userUpvote = (req, res, next) => {
     user_id = req.body.user_id
-    sql.query('SELECT * FROM pvotes WHERE fk_user_id = ? and fk_post_id = ? and pvote_score = 1', [user_id, req.params.id], (error, results, fields) => {
+    sql.query('SELECT * FROM pvotes WHERE fk_user_id = ? and fk_post_id = ? and pvote_up = 1', [user_id, req.params.id], (error, results, fields) => {
         if (error) {
             res.status(400).send(error) 
         } else {
