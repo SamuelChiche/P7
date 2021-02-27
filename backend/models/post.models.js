@@ -59,14 +59,4 @@ Post.deleteById = (id, result) => {
     })
 }
 
-Post.updateWhenVoted = (result) => {
-    sql.query('UPDATE posts SET post_score = (SELECT SUM(pvote_score) FROM pvotes WHERE fk_post_id = post_id)', (error, results, fields) => {
-        if (error){
-            result(null, error)
-        } else {
-            result(null, results)
-        }
-    })
-}
-
 module.exports = Post;
