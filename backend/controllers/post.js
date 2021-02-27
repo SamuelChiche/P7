@@ -6,6 +6,7 @@ exports.create = (req, res, next) => {
         "text" : req.body.text,
         "title" : req.body.title,
         "user_name" : req.body.user_name,
+        "image" : `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     }
     Post.create(new_post, (err, post) => {
         if (err) {

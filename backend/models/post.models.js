@@ -4,13 +4,14 @@ const Post = (post) => {
     this.user.id = post.user_id,
     this.text = post.text,
     this.title = post.title,
-    this.user_name = post.user_name
+    this.user_name = post.user_name,
+    this.image = post.image
 };
 
 Post.create = (newPost, result) => {
     sql.query("INSERT INTO posts SET ?", newPost, (err, res) => {
         if (err) {
-            throw err
+            result(null, err)
         } else {
             result (null, res.insertId)
         }
