@@ -57,9 +57,6 @@
         </div>
       </div>
       <div class="card-body">
-        <div class="text-muted h7 mb-2">
-          {{ post.created_at }}
-        </div>
         <router-link
           :to="{ name: 'upost', params: { id: post.post_id } }"
           class="card-link"
@@ -71,22 +68,17 @@
         <p class="card-text">
           {{ post.text }}
         </p>
+        <img :src="post.image" height="500px" width="500px" v-if="post.image != undefined">
       </div>
-      <div class="card-footer">
-        <button @click="upvotePost(post.post_id)" class="btn">
-          <font-awesome-icon icon="chevron-up" />
-        </button>
-        {{ post.post_score }}
-        <button @click="downvotePost(post.post_id)" class="btn">
-          <font-awesome-icon icon="chevron-down" />
-        </button>
-      </div>
+    </div>
+    <div class="card-footer">
+
     </div>
   </div>
 </template>
 <script>
-import axios from 'axios';
-import PostServices from "../services/PostServices"
+import axios from "axios";
+import PostServices from "../services/PostServices";
 export default {
   name: "Post",
   components: {},
@@ -96,19 +88,20 @@ export default {
     };
   },
   mounted() {
-    this.getAllPosts()
+    this.getAllPosts();
   },
   methods: {
-    getAllPosts () {
+    getAllPosts() {
       PostServices.getAll()
-      .then((res) => {
-        this.posts_list = res.data;
-      })
-      .catch((err) => err);
+        .then((res) => {
+          this.posts_list = res.data;
+          console.log(this.posts_list);
+        })
+        .catch((err) => err);
     },
-    deletePost (id) {
+    deletePost(id) {
       PostServices.delete(id)
-        .then(window.location.reload())
+        .then(window.location.reload());
     },
     upvotePost: function (id) {
       let user_id = JSON.parse(this.$store.state.user).id;

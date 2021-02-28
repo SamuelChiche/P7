@@ -5,8 +5,8 @@ class PostServices {
         return axios.get("http://localhost:3000/post")
     }
 
-    create(data){
-        return axios.post("http://localhost:3000/post", data)
+    create(fd){
+        return axios.post("http://localhost:3000/post", fd)
     }
 
     getOne(id){
@@ -18,7 +18,7 @@ class PostServices {
     }
 
     delete(id){
-        return axios.get("http://localhost:3000/post/" + id)
+        return axios.delete("http://localhost:3000/post/" + id)
     }
 
     getFromUser(id){

@@ -1,5 +1,5 @@
 <template>
-    <div class="upost container">
+  <div class="upost container">
     <div
       class="card gedf-card my-5"
       v-for="(post, index) in posts"
@@ -63,27 +63,24 @@
 </template>
 
 <script>
-import PostServices from '../services/PostServices'
+import PostServices from "../services/PostServices";
 export default {
-    data (){
-        return {
-            posts : []
-        }
-        
+  data() {
+    return {
+      posts: [],
+    };
+  },
+  mounted() {
+    this.getPost();
+  },
+  methods: {
+    getPost() {
+      let id = this.$route.params.id;
+      PostServices.getOne(id).then((res) => {
+        this.posts = res.data;
+        console.log(this.posts);
+      });
     },
-    mounted () {
-        this.getPost()
-    },
-    methods : {
-        getPost () {
-            let id = this.$route.params.id
-            PostServices.getOne(id)
-                .then((res) => {
-                    this.posts = res.data
-                    console.log(this.posts)
-                    })
-                
-        }
-    }
-}
+  },
+};
 </script>
