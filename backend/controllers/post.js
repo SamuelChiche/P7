@@ -37,7 +37,7 @@ exports.create = (req, res, next) => {
 exports.getOnePost = (req, res, next) => {
     let id = req.params.id;
     if (!id) {
-        res.status(400).json({ error: "Id not provided" })
+        res.status(400).send({ error: "Id not provided" })
     }
     Post.findById(id, (err, data) => {
         if (err) {
@@ -65,7 +65,7 @@ exports.getAllPosts = (req, res, next) => {
 exports.getPostsFromUser = (req, res, next) => {
     let id = req.params.id
     if (!id) {
-        res.status(400).json({ error: "Id not provided" })
+        res.status(400).send({ error: "Id not provided" })
     }
     Post.getAllFromUser(id, (err, data) => {
         if (err) {
@@ -83,9 +83,10 @@ exports.getPostsFromUser = (req, res, next) => {
 exports.deleteOne = (req, res, next) => {
     let id = req.params.id;
     if (!id) {
-        res.status(400).json({ error: "Id not provided" })
+        res.status(400).send({ error: "Id not provided" })
     }
-    Post.findById(id, (err, data) => {
+    Post.findById(id, (err, post, data) => {
+        console.log(post.image)
         if (err) {
             if (err.kind == "not_found") {
                 res.status(404).send({ err: 'Post not found !' })
@@ -93,9 +94,7 @@ exports.deleteOne = (req, res, next) => {
                 res.status(500).send({ err: "There was a problem retrieving this post !" })
             }
         } else {
-            let filename = JSON.stringify(data[0].image).split('/images/')[1].slice(0, -1)
-            console.log(filename)
-            fs.unlink(`images/${filename}`, () => {
+            if (post.image === null) {
                 Post.deleteById(id, (err, data) => {
                     if (err) {
                         if (err.kind === "not found") {
@@ -107,7 +106,22 @@ exports.deleteOne = (req, res, next) => {
                         res.status(200).json(data)
                     }
                 })
-            })
+            } else {
+                let filename = post.image.split('/images/')[1]
+                fs.unlink(`images/${filename}`, () => {
+                    Post.deleteById(id, (err, data) => {
+                        if (err) {
+                            if (err.kind === "not found") {
+                                res.status(404).send({ message: 'User not found' })
+                            } else {
+                                res.status(500).send({ message: 'Error deleting post' })
+                            }
+                        } else {
+                            res.status(200).json(data)
+                        }
+                    })
+                })
+            }
         }
     })
 }

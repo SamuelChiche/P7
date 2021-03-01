@@ -23,7 +23,7 @@ Post.findById = (id, result) => {
         if (error) {
             result(null, error)
         } else {
-            result(null, results)
+            result(null, results[0])
         }
     })
 };
