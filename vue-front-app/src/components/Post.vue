@@ -68,7 +68,7 @@
         <p class="card-text">
           {{ post.text }}
         </p>
-        <img :src="post.image" height="500px" width="500px" v-if="post.image != undefined">
+        <img :src="post.image" height="400px" width="800px" v-if="post.image != undefined">
       </div>
       <div class="card-footer">
 

@@ -15,9 +15,11 @@
           <div class="opacity-75 mb-4">
             {{ email }}
           </div>
-          <div v-if="this.$route.params.id = JSON.parse($store.state.user).id">
+          <div
+            v-if="(this.$route.params.id = JSON.parse($store.state.user).id)"
+          >
             <button class="btn btn-danger" @click="deleteUser">
-                Supprimer mon compte
+              Supprimer mon compte
             </button>
           </div>
         </div>
@@ -57,7 +59,12 @@ export default {
     deleteUser() {
       let id = JSON.parse(this.$store.state.user).id
       UserServices.deleteOne(id)
-    }
+        .then(() => {
+          this.$store.dispatch("logout")
+              .then(() => this.$router.push("/login"));
+        })
+    },
+    
   },
 };
 </script>
