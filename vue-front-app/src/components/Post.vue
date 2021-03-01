@@ -70,14 +70,13 @@
         </p>
         <img :src="post.image" height="500px" width="500px" v-if="post.image != undefined">
       </div>
-    </div>
-    <div class="card-footer">
+      <div class="card-footer">
 
+    </div>
     </div>
   </div>
 </template>
 <script>
-import axios from "axios";
 import PostServices from "../services/PostServices";
 export default {
   name: "Post",
@@ -102,22 +101,6 @@ export default {
     deletePost(id) {
       PostServices.delete(id)
         .then(window.location.reload());
-    },
-    upvotePost: function (id) {
-      let user_id = JSON.parse(this.$store.state.user).id;
-      let like = 1;
-      axios.post("http://localhost:3000/post/" + id + "/like", {
-        like,
-        user_id,
-      });
-    },
-    downvotePost: function (id) {
-      let user_id = JSON.parse(this.$store.state.user).id;
-      let like = -1;
-      axios.post("http://localhost:3000/post/" + id + "/like", {
-        like,
-        user_id,
-      });
     },
   },
   computed: {},
