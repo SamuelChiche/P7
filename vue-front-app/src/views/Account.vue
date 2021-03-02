@@ -48,6 +48,7 @@ export default {
   methods: {
     getOneUser() {
       let userId = this.$route.params.id;
+      console.log(userId)
       UserServices.getOne(userId)
         .then((res) => {
           const userData = res.data[0];
