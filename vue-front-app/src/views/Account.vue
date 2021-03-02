@@ -15,35 +15,56 @@
           <div class="opacity-75 mb-4">
             {{ email }}
           </div>
+          <div
+            v-if="(this.$route.params.id = JSON.parse($store.state.user).id)"
+          >
+            <button class="btn btn-danger" @click="deleteUser">
+              Supprimer mon compte
+            </button>
+          </div>
         </div>
       </div>
     </div>
-    <Userpost/>
+    <Userpost />
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import Userpost from "../components/Userpost"
+import UserServices from "../services/UserServices"
+import Userpost from "../components/Userpost";
 export default {
-  components : {
-    Userpost
+  components: {
+    Userpost,
   },
-  data () {
+  data() {
     return {
       name: "",
       email: "",
     };
   },
-  mounted: function () {
-    let userId = this.$route.params.id;
-    axios.get("http://localhost:3000/user/" + userId)
-      .then((res) => {
-        const userData = res.data[0]
-        this.name = userData.name
-        this.email = userData.email
-      })
-      .catch(err => err)
+  mounted() {
+    this.getOneUser()
+  },
+  methods: {
+    getOneUser() {
+      let userId = this.$route.params.id;
+      UserServices.getOne(userId)
+        .then((res) => {
+          const userData = res.data[0];
+          this.name = userData.name;
+          this.email = userData.email;
+        })
+        .catch((err) => err);
+    },
+    deleteUser() {
+      let id = JSON.parse(this.$store.state.user).id
+      UserServices.deleteOne(id)
+        .then(() => {
+          this.$store.dispatch("logout")
+              .then(() => this.$router.push("/login"));
+        })
+    },
+    
   },
 };
 </script>

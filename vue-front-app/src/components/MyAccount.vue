@@ -3,6 +3,8 @@
             class="btn btn-secondary mr-2"
             type="button"
             id="myProfile"
+            aria-label="my-account"
+
           >
             <font-awesome-icon icon="user" />
     </button>

@@ -3,7 +3,7 @@
     <div class="header container">
       <nav class="navbar justify-content-between">
         <router-link to="/" class="navbar-brand"
-          ><img src="../assets/icon-left-font-monochrome-white.png" alt=""
+          ><img src="../assets/icon-left-font-monochrome-white.png" alt="logo groupomania"
         /></router-link>
 
         <div class="navbar" v-if="isLoggedIn">
@@ -33,8 +33,10 @@
 </template>
 
 <script>
+
 import Logout from "../components/Logout";
 import MyAccount from "../components/MyAccount";
+
 export default {
   name: "Header",
   components: {
@@ -42,7 +44,7 @@ export default {
     MyAccount,
   },
   computed: {
-    isLoggedIn: function () {
+    isLoggedIn () {
       return this.$store.getters.isLoggedIn;
     },
   },

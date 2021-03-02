@@ -2,6 +2,7 @@ const sql = require('../models/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.models')
+const dotenv = require('dotenv').config();
 
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
@@ -21,8 +22,8 @@ exports.signup = (req, res, next) => {
                                 return res.status(500).send({ err : "There was a problem finding the user"})
                             }
                             else{
-                                let token = jwt.sign({id: user.id}, "secret_key", {expiresIn : 86400});
-                                res.status(200).send({ auth: true, token: token, user: user});
+                                let token = jwt.sign({id: user.id}, process.env.TOKEN, {expiresIn : 86400});
+                                res.status(200).send({ auth: true, token: token, user: user[0]});
                             }
                         })
                     }
@@ -50,7 +51,7 @@ exports.login = (req, res, next) => {
                                         return res.status(500).send({ err : "There was a problem finding the user"})
                                     }
                                     else{
-                                        let token = jwt.sign({id: user.id}, "secret_key", {expiresIn : 86400});
+                                        let token = jwt.sign({id: user.id}, process.env.TOKEN, {expiresIn : 86400});
                                         res.status(200).send({ auth: true, token: token, user: user[0]});
                                     }
                                 })

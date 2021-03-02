@@ -45,8 +45,11 @@
     </div>
   </div>
 </template>
+
 <script>
-import axios from "axios";
+
+import PostServices from "../services/PostServices"
+
 export default {
   name: "Userpost",
   data() {
@@ -55,10 +58,14 @@ export default {
     };
   },
   mounted() {
-    let userId = this.$route.params.id
-    axios
-      .get("http://localhost:3000/post/user/" + userId)
-      .then((res) => (this.posts_list = res.data));
+    this.getPostFromUser()
   },
+  methods : {
+    getPostFromUser() {
+      let userId = this.$route.params.id
+      PostServices.getFromUser(userId)
+      .then((res) => (this.posts_list = res.data));
+    }
+  }
 };
 </script>
