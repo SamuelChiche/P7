@@ -86,7 +86,6 @@ exports.deleteOne = (req, res, next) => {
         res.status(400).send({ error: "Id not provided" })
     }
     Post.findById(id, (err, post, data) => {
-        console.log(post.image)
         if (err) {
             if (err.kind == "not_found") {
                 res.status(404).send({ err: 'Post not found !' })

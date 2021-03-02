@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv').config();
 
 authenticateToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
@@ -6,7 +7,7 @@ authenticateToken = (req, res, next) => {
     if (token == null) {
         res.status(401).send({ error : 'Token is null'})
     } else {
-        jwt.verify(token, 'secret_key', (err, user) => {
+        jwt.verify(token, process.env.TOKEN, (err, user) => {
             if (err) {
                 res.status(403).send({ error : 'Invalid token !'})
             } else {
