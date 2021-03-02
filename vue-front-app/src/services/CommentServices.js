@@ -14,11 +14,11 @@ class CommentServices {
     }
 
     edit(){
-        return axios.get("http://localhost:3000/post")
+        return axios.get("http://localhost:3000/comment")
     }
 
     delete(id){
-        return axios.delete("http://localhost:3000/post/" + id)
+        return axios.delete("http://localhost:3000/comment/" + id)
     }
 
     getFromPost(id){
