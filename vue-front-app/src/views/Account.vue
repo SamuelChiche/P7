@@ -16,7 +16,7 @@
             {{ email }}
           </div>
           <div
-            v-if="(this.$route.params.id = JSON.parse($store.state.user).id)"
+            v-if="(this.$route.params.id === JSON.parse($store.state.user).id)"
           >
             <button class="btn btn-danger" @click="deleteUser">
               Supprimer mon compte
@@ -42,13 +42,12 @@ export default {
       email: "",
     };
   },
-  mounted() {
+  created() {
     this.getOneUser()
   },
   methods: {
     getOneUser() {
       let userId = this.$route.params.id;
-      console.log(userId)
       UserServices.getOne(userId)
         .then((res) => {
           const userData = res.data[0];

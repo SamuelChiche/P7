@@ -67,6 +67,7 @@
           height="400px"
           width="800px"
           v-if="post.image != undefined"
+          @click ="this.src=post.image"
         />
       </div>
       <div class="card-footer">
