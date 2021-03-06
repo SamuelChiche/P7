@@ -16,7 +16,7 @@
             {{ email }}
           </div>
           <div
-            v-if="(this.$route.params.id === JSON.parse($store.state.user).id)"
+            v-if="(this.$route.params.id === JSON.parse($store.state.user).id) || JSON.parse(this.$store.state.user).is_admin == 1"
           >
             <button class="btn btn-danger" @click="deleteUser">
               Supprimer mon compte
@@ -47,6 +47,7 @@ export default {
   },
   methods: {
     getOneUser() {
+      console.log(JSON.parse(this.$store.state.user).is_admin)
       let userId = this.$route.params.id;
       UserServices.getOne(userId)
         .then((res) => {

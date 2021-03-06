@@ -26,7 +26,7 @@
             </div>
           </div>
           <div>
-            <div class="dropdown" v-if="post.user_id == current_user_id">
+            <div class="dropdown" v-if="post.user_id == current_user_id || JSON.parse(this.$store.state.user).is_admin == 1">
               <button
                 class="btn btn-link dropdown-toggle"
                 type="button"
@@ -36,7 +36,6 @@
                 aria-expanded="false"
               ></button>
               <div class="dropdown-menu">
-                <li></li>
                 <li class="dropdown-item">
                   <a @click="modifyPost(post.post_id)"> Modifier </a>
                 </li>
@@ -123,7 +122,8 @@
                   class="dropdown"
                   v-if="
                     post.user_id === current_user_id ||
-                    comment.user_id === current_user_id
+                    comment.user_id === current_user_id ||
+                    JSON.parse(this.$store.state.user).is_admin == 1
                   "
                 >
                   <button

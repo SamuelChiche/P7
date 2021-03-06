@@ -4,6 +4,7 @@ const User = (user)=>{
     this.email = user.email;
     this.name = user.name;
     this.password = user.password;
+    this.is_admin = user.is_admin;
 };
 
 User.findById = (id, result) => {
