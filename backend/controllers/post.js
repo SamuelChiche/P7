@@ -62,6 +62,27 @@ exports.getAllPosts = (req, res, next) => {
     })
 };
 
+exports.updateOne = (req, res, next) => {
+    let id = req.params.id;
+    let text = req.body.text;
+    let title = req.body.title
+
+    if(!id || !text || !title) {
+        res.status(400).json({ error : "error"})
+    }
+    Post.updateById(id, (req.body), (err, data) => {
+        if (err) {
+            if  (err.kind === "not found") {
+                res.status(404).send({message : 'Post not found'})
+            } else {
+                res.status(500).send({message : 'Error updating post'})
+            }
+        } else {
+            res.status(201).send(data)
+        }
+    })
+};
+
 exports.getPostsFromUser = (req, res, next) => {
     let id = req.params.id
     if (!id) {

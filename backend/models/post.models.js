@@ -48,6 +48,19 @@ Post.getAllFromUser = (id, result) => {
     })
 }
 
+Post.updateById = (id, post, result) => {
+    sql.query('UPDATE posts SET title = ?, text = ? WHERE post_id = ?',
+    [post.title, post.text, id], (error, results, fields) => {
+        if (error) {
+            result(null, error)
+        } else if (results.affectedRows === 0) {
+            result({ kind : "not_found"}, null);
+        } else {
+            result(null, results)
+        }
+    })
+};
+
 Post.deleteById = (id, result) => {
     sql.query('DELETE FROM posts WHERE post_id = ?', id, (error, results, fields) => {
         if (error) {
