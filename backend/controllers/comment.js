@@ -48,7 +48,7 @@ exports.getCommentsFromPost = (req, res, next) => {
     if (!id) {
         res.status(400).send({ error: "Id not provided" })
     }
-    Coment.getAllFromPost(id, (err, data) => {
+    Comment.getAllFromPost(id, (err, data) => {
         if (err) {
             if (err.kind == "not_found") {
                 res.status(404).send({ err: 'Post not found !' })
@@ -57,6 +57,26 @@ exports.getCommentsFromPost = (req, res, next) => {
             }
         } else {
             res.status(200).send(data)
+        }
+    })
+};
+
+exports.updateOneComment = (req, res, next) => {
+    let id = req.params.id;
+    let text = req.body;
+
+    if(!id || !text) {
+        res.status(400).json({ error : "error"})
+    }
+    Comment.updateById(id, (req.body), (err, data) => {
+        if (err) {
+            if  (err.kind === "not found") {
+                res.status(404).send({message : 'User not found'})
+            } else {
+                res.status(500).send({message : 'Error updating user'})
+            }
+        } else {
+            res.status(201).send(data)
         }
     })
 };
