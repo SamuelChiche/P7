@@ -43,7 +43,13 @@
               ></button>
               <div class="dropdown-menu">
                 <li class="dropdown-item">
-                  <a @click="modifyPost(post.post_id)"> Modifier </a>
+                  <button
+                    @click="postEditor(post.text, post.title, post.post_id)"
+                    data-toggle="modal"
+                    data-target="#editPostModal"
+                  >
+                    Edit
+                  </button>
                 </li>
                 <li class="dropdown-item">
                   <a @click="deletePost(post.post_id)">
@@ -158,62 +164,6 @@
                       </a>
                     </li>
                   </div>
-                  <div
-                    class="modal fade"
-                    id="editCommentModal"
-                    tabindex="-1"
-                    role="dialog"
-                    aria-labelledby="exampleModalLabel"
-                    aria-hidden="true"
-                  >
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">
-                            Modifiez votre commentaire !
-                          </h5>
-                          <button
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          <form>
-                            <div class="form-group">
-                              <label for="message-text" class="col-form-label"
-                                >Message:</label
-                              >
-                              <textarea
-                                class="form-control"
-                                id="message-text"
-                                v-model="comment_edit"
-                              ></textarea>
-                            </div>
-                          </form>
-                        </div>
-                        <div class="modal-footer">
-                          <button
-                            type="button"
-                            class="btn btn-danger"
-                            data-dismiss="modal"
-                          >
-                            Fermer
-                          </button>
-                          <button
-                            type="button"
-                            class="btn btn-primary"
-                            @click="editComment()"
-                          >
-                            Sauvegarder les modifications
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -222,6 +172,119 @@
                 {{ comment.text }}
               </p>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Edit comment modal -->
+    <div
+      class="modal fade"
+      id="editCommentModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="editCommentModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modifiez votre commentaire !</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="message-text" class="col-form-label"
+                  >Message:</label
+                >
+                <textarea
+                  class="form-control"
+                  id="message-text"
+                  v-model="comment_edit"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              Fermer
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="editComment()"
+            >
+              Sauvegarder les modifications
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Edit post modal -->
+    <div
+      class="modal fade"
+      id="editPostModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="editPostModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modifiez votre post !</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="message-text" class="col-form-label"
+                  >Titre:</label
+                >
+                <input
+                  class="form-control"
+                  id="message-text"
+                  v-model="post_edit_title"
+                  type="title"
+                />
+              </div>
+              <div class="form-group">
+                <label for="message-title" class="col-form-label"
+                  >Message:</label
+                >
+                <textarea
+                  class="form-control"
+                  id="message-text"
+                  v-model="post_edit_text"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              Fermer
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="editPost()"
+            >
+              Sauvegarder les modifications
+            </button>
           </div>
         </div>
       </div>
@@ -246,15 +309,19 @@ export default {
       comments_list: [],
       users_list: [],
       current_user_id: JSON.parse(this.$store.state.user).id,
-      myModel: false,
+      post_edit_text: null,
+      post_edit_title : null,
+      post_edit_id: null,
     };
   },
   created() {
+    // Méthodes appliquées à la création de la page
     this.getAllPosts();
     this.getAllComments();
     this.getAllUsers();
   },
   methods: {
+    // Récupération des posts
     getAllPosts() {
       PostServices.getAll()
         .then((res) => {
@@ -263,18 +330,21 @@ export default {
         })
         .catch((err) => err);
     },
+    // Récupération des commentaires
     getAllComments() {
       CommentServices.getAll().then((res) => {
         this.comments_list = res.data;
         console.log(this.comments_list);
       });
     },
+    // Récupération des utilisateurs
     getAllUsers() {
       UserServices.getAll().then((res) => {
         this.users_list = res.data;
         console.log(this.users_list);
       });
     },
+    // Création d'un commentaire
     createComment(post_id) {
       let user_id = JSON.parse(this.$store.state.user).id;
       let text = this.comment_text;
@@ -285,24 +355,42 @@ export default {
       };
       CommentServices.create(data);
     },
+    // Suppression d'un post
     deletePost(id) {
       PostServices.delete(id).then(window.location.reload());
     },
+    // Suppression d'un commentaire
     deleteComment(id) {
       CommentServices.delete(id).then(window.location.reload());
     },
+    postEditor(post_text, post_title, id){
+      this.post_edit_id = id
+      this.post_edit_text = post_text
+      this.post_edit_title = post_title
+    },
+    editPost() {
+      let id = this.post_edit_id
+      let text = this.post_edit_text
+      let title = this.post_edit_title
+      let data = {
+        title,
+        text
+      }
+      PostServices.edit(id, data).then(window.location.reload());
+    },
+    // Récupération de valeurs lors de l'ouverture de l'editeur de commentaire
     openModel(comment, id) {
       this.comment_edit_id = id;
       this.comment_edit = comment;
     },
+    // Modification d'un commentaire
     editComment() {
       let id = this.comment_edit_id;
       let text = this.comment_edit;
       let data = {
         text,
       };
-      CommentServices.edit(id, data)
-        .then(window.location.reload());
+      CommentServices.edit(id, data).then(window.location.reload());
     },
   },
   computed: {},
