@@ -19,14 +19,20 @@
             <div class="ml-2">
               <div class="h5 m-0">
                 <router-link
-                  :to="{ name: 'account', params: { id: post.user_id }}"
+                  :to="{ name: 'account', params: { id: post.user_id } }"
                   >{{ post.user_name }}</router-link
                 >
               </div>
             </div>
           </div>
           <div>
-            <div class="dropdown" v-if="post.user_id == current_user_id || JSON.parse(this.$store.state.user).is_admin == 1">
+            <div
+              class="dropdown"
+              v-if="
+                post.user_id == current_user_id ||
+                JSON.parse($store.state.user).is_admin == 1
+              "
+            >
               <button
                 class="btn btn-link dropdown-toggle"
                 type="button"
@@ -66,7 +72,7 @@
           height="400px"
           width="800px"
           v-if="post.image != undefined"
-          @click ="this.src=post.image"
+          @click="this.src = post.image"
         />
       </div>
       <div class="card-footer">
@@ -75,13 +81,15 @@
             <div class="input-group input-group">
               <input
                 class="form-control"
-                  id="message"
-                  placeholder="What are you thinking?"
-                  v-model="comment_text"
+                placeholder="What are you thinking?"
+                v-model="comment_text"
               />
               <div class="input-group-append">
-                <button @click="createComment(post.post_id)" type="submit" class="text-decoration-none text-white btn btn-primary">
-                
+                <button
+                  @click="createComment(post.post_id)"
+                  type="submit"
+                  class="text-decoration-none text-white btn btn-primary"
+                >
                   Comment
                 </button>
               </div>
@@ -115,7 +123,7 @@
                       .join("")
                   }}</router-link
                 >
-                <p class="small m-0 text-muted">{{comment.updated_at}}</p>
+                <p class="small m-0 text-muted">{{ comment.updated_at }}</p>
               </div>
               <div>
                 <div
@@ -123,7 +131,7 @@
                   v-if="
                     post.user_id === current_user_id ||
                     comment.user_id === current_user_id ||
-                    JSON.parse(this.$store.state.user).is_admin == 1
+                    JSON.parse($store.state.user).is_admin == 1
                   "
                 >
                   <button
@@ -136,15 +144,75 @@
                   ></button>
                   <div class="dropdown-menu">
                     <li class="dropdown-item">
-                      <a @click="modifyComment(comment.comment_id)">
-                        Modifier
-                      </a>
+                      <button
+                        @click="openModel(comment.text, comment.comment_id)"
+                        data-toggle="modal"
+                        data-target="#editCommentModal"
+                      >
+                        sd
+                      </button>
                     </li>
                     <li class="dropdown-item">
                       <a @click="deleteComment(comment.comment_id)">
                         Supprimer <font-awesome-icon icon="trash" />
                       </a>
                     </li>
+                  </div>
+                  <div
+                    class="modal fade"
+                    id="editCommentModal"
+                    tabindex="-1"
+                    role="dialog"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">
+                            Modifiez votre commentaire !
+                          </h5>
+                          <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <form>
+                            <div class="form-group">
+                              <label for="message-text" class="col-form-label"
+                                >Message:</label
+                              >
+                              <textarea
+                                class="form-control"
+                                id="message-text"
+                                v-model="comment_edit"
+                              ></textarea>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-danger"
+                            data-dismiss="modal"
+                          >
+                            Fermer
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-primary"
+                            @click="editComment()"
+                          >
+                            Sauvegarder les modifications
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -172,10 +240,13 @@ export default {
   data() {
     return {
       posts_list: [],
-      comment_text: "",
+      comment_text: null,
+      comment_edit: null,
+      comment_edit_id: null,
       comments_list: [],
       users_list: [],
       current_user_id: JSON.parse(this.$store.state.user).id,
+      myModel: false,
     };
   },
   created() {
@@ -219,6 +290,19 @@ export default {
     },
     deleteComment(id) {
       CommentServices.delete(id).then(window.location.reload());
+    },
+    openModel(comment, id) {
+      this.comment_edit_id = id;
+      this.comment_edit = comment;
+    },
+    editComment() {
+      let id = this.comment_edit_id;
+      let text = this.comment_edit;
+      let data = {
+        text,
+      };
+      CommentServices.edit(id, data)
+        .then(window.location.reload());
     },
   },
   computed: {},

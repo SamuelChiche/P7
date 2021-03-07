@@ -2,7 +2,7 @@
   <div class="makeapost">
     <form>
       <div class="card gedf-card">
-        <div class="card-header text-center"> Postez vos envies </div>
+        <div class="card-header text-center">Postez vos envies</div>
         <div class="card-body">
           <div class="tab-content" id="myTabContent">
             <div
@@ -18,8 +18,8 @@
                   class="form-control"
                   id="inputTitle"
                   placeholder="Titre"
-                  required
                   v-model="title"
+                  required
                 />
               </div>
               <div class="form-group">
@@ -34,9 +34,9 @@
                 ></textarea>
               </div>
               <div class="image-preview text-center my-3">
-                <img :src="this.image">
+                <img :src="this.image" />
               </div>
-              <input type="file" name='file' @change="onFileSelected">
+              <input type="file" name="file" @change="onFileSelected" />
             </div>
           </div>
           <div class="btn-toolbar float-right">
@@ -53,39 +53,41 @@
 </template>
 
 <script>
-
-import PostServices from '../services/PostServices';
+import PostServices from "../services/PostServices";
 
 export default {
   name: "Makeapost",
   data() {
     return {
-      text: "",
-      title: "",
-      selectedFile : null,
-      image : null
+      text: null,
+      title: null,
+      selectedFile: null,
+      image: null,
     };
   },
   methods: {
     onFileSelected(event) {
-      this.selectedFile =  event.target.files[0]
-      let reader = new FileReader()
-      reader.readAsDataURL(this.selectedFile)
-      reader.onload = e => {
-        this.image = e.target.result
-      }
+      this.selectedFile = event.target.files[0];
+      let reader = new FileReader();
+      reader.readAsDataURL(this.selectedFile);
+      reader.onload = (e) => {
+        this.image = e.target.result;
+      };
     },
-    createPost(){
-      let fd = new FormData()
-      let user_id = JSON.parse(this.$store.state.user).id
-      let user_name = JSON.parse(this.$store.state.user).name
-      fd.append('image', this.selectedFile)
-      fd.append('title', this.title)
-      fd.append('text', this.text)
-      fd.append('user_id', user_id)
-      fd.append('user_name', user_name)
-      PostServices.create(fd)
-        .catch((err) => console.log(err))
+    createPost() {
+      if (this.title === null) {
+        alert("Un post doit contenir un titre !");
+      } else {
+        let fd = new FormData();
+        let user_id = JSON.parse(this.$store.state.user).id;
+        let user_name = JSON.parse(this.$store.state.user).name;
+        fd.append("image", this.selectedFile);
+        fd.append("title", this.title);
+        fd.append("text", this.text);
+        fd.append("user_id", user_id);
+        fd.append("user_name", user_name);
+        PostServices.create(fd).catch((err) => console.log(err));
+      }
     },
   },
 };
