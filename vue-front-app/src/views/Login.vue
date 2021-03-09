@@ -1,8 +1,10 @@
 <template>
+<!-- Page de connexion -->
   <div class="login container">
-    <router-link to="/signup"></router-link>
+    <!-- Formulaire de connexion -->
     <form v-on:submit.prevent="login">
       <div class="form-group">
+        <!-- Email -->
         <label for="inputEmail">Email</label>
         <input
           type="email"
@@ -14,18 +16,19 @@
           v-model="email"
         />
       </div>
+      <!-- Mot de passe -->
       <div class="form-group">
-        <label for="inputPassword">Password</label>
+        <label for="inputPassword">Mot de passe</label>
         <input
           type="password"
           class="form-control"
           id="inputPassword"
-          placeholder="Password"
+          placeholder="Mot de passe"
           required
           v-model="password"
         />
       </div>
-
+      <!--  -->
       <button type="submit" class="btn btn-primary">Se connecter</button>
     </form>
     <div>

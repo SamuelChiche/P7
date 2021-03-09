@@ -67,7 +67,7 @@ export default {
   name: "Makeapost",
   data() {
     return {
-      text: null,
+      text: '',
       title: null,
       selectedFile: null,
       image: null,
@@ -96,7 +96,9 @@ export default {
         fd.append("text", this.text);
         fd.append("user_id", user_id);
         fd.append("user_name", user_name);
-        PostServices.create(fd).catch((err) => console.log(err));
+        PostServices.create(fd)
+          .then((res) => res)
+          .catch((err) => console.log(err));
       }
     },
   },

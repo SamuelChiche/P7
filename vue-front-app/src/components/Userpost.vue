@@ -280,6 +280,7 @@
 </template>
 
 <script>
+// Importation des appels API
 import PostServices from "../services/PostServices";
 import CommentServices from "../services/CommentServices";
 import UserServices from "../services/UserServices";
@@ -308,23 +309,27 @@ export default {
     // Récupération des posts de l'utilisateur
     getPostFromUser() {
       let userId = this.$route.params.id;
-      PostServices.getFromUser(userId).then(
-        (res) => (this.posts_list = res.data)
-      );
+      PostServices.getFromUser(userId)
+        .then((res) => (this.posts_list = res.data))
+        .catch((err) => err);
     },
-    // Récupération
+    // Récupération des commentaires
     getAllComments() {
-      CommentServices.getAll().then((res) => {
-        this.comments_list = res.data;
-        console.log(this.comments_list);
-      });
+      CommentServices.getAll()
+        .then((res) => {
+          this.comments_list = res.data;
+        })
+        .catch((err) => err);
     },
+    // Récupération des utilisateurs
     getAllUsers() {
-      UserServices.getAll().then((res) => {
-        this.users_list = res.data;
-        console.log(this.users_list);
-      });
+      UserServices.getAll()
+        .then((res) => {
+          this.users_list = res.data;
+        })
+        .catch((err) => err);
     },
+    // Création d'un commentaire
     createComment(post_id) {
       let user_id = JSON.parse(this.$store.state.user).id;
       let text = this.comment_text;
@@ -335,9 +340,11 @@ export default {
       };
       CommentServices.create(data);
     },
+    // Suppression d'un post
     deletePost(id) {
       PostServices.delete(id).then(window.location.reload());
     },
+    // Suppression d'un commentaire
     deleteComment(id) {
       CommentServices.delete(id).then(window.location.reload());
     },

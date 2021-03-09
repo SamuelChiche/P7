@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+//Appels API pour les utilisateurs
 class UserServices {
     getOne(id){
         return axios.get("http://localhost:3000/user/" + id)
