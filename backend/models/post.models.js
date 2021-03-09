@@ -39,7 +39,7 @@ Post.getAll = (result) => {
 };
 
 Post.getAllFromUser = (id, result) => {
-    sql.query('SELECT * FROM posts INNER JOIN users ON posts.user_id = users.id WHERE id = ?', id , (error, results, fields) => {
+    sql.query('SELECT * FROM posts  INNER JOIN users ON posts.user_id = users.id WHERE id = ? ORDER BY posts.created_at DESC', id , (error, results, fields) => {
         if (error){
             result(null, error)
         } else {
