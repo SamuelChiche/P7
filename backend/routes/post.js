@@ -10,5 +10,6 @@ router.get('/', authToken, postCtrl.getAllPosts);
 router.get('/:id', authToken, postCtrl.getOnePost);
 router.get('/user/:id', authToken , postCtrl.getPostsFromUser);
 router.delete('/:id', authToken , postCtrl.deleteOne);
+router.put('/:id', authToken, postCtrl.updateOne)
 
 module.exports = router;

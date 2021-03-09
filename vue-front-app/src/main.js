@@ -18,7 +18,7 @@ Vue.prototype.$http = axios
 
 const token = store.state.token
 
-if (token){
+if (token) {
   Vue.prototype.$http.defaults.headers.common['Authorization'] = 'Bearer' + ' ' + token
 }
 

@@ -13,8 +13,8 @@ class PostServices {
         return axios.get("http://localhost:3000/post/" + id)
     }
 
-    edit(){
-        return axios.get("http://localhost:3000/post")
+    edit(id, data){
+        return axios.put("http://localhost:3000/post/" + id, data )
     }
 
     delete(id){

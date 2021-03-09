@@ -58,4 +58,17 @@ Comment.deleteById = (id, result) => {
     })
 }
 
+Comment.updateById = (id, comment, result) => {
+    sql.query('UPDATE comments SET text = ? WHERE comment_id = ?',
+    [comment.text, id ] , (error, results, fields) => {
+        if (error) {
+            result(null, error)
+        } else if (results.affectedRows === 0) {
+            result({ kind : "not_found"}, null);
+        } else {
+            result(null, results)
+        }
+    })
+};
+
 module.exports = Comment;

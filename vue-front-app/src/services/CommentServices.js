@@ -13,8 +13,8 @@ class CommentServices {
         return axios.get("http://localhost:3000/comment/" + id)
     }
 
-    edit(){
-        return axios.get("http://localhost:3000/comment")
+    edit(id, data){
+        return axios.put("http://localhost:3000/comment/" + id, data)
     }
 
     delete(id){

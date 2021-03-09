@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS posts(
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE = INNODB;
 
+--Create comments table
 CREATE TABLE IF NOT EXISTS comments(
     comment_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
     user_id INT NOT NULL,
@@ -35,6 +36,8 @@ CREATE TABLE IF NOT EXISTS comments(
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,    
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE 
+    FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE
 ) ENGINE = INNODB;
 
+--Insert admin user. Password is : 'adminpass'
+INSERT INTO users (email, name, password, is_admin) VALUES ('admin@groupomania.com', 'Groupomania', '$2b$10$4JckKr6DhpUC3b1kZbl.WeRVt41ukAoyIvWZ8ePr5T7hWsy9woWHC', '1');

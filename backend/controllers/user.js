@@ -10,7 +10,8 @@ exports.signup = (req, res, next) => {
             const user = {
                 "email": req.body.email,
                 "name": req.body.name,
-                "password": hash
+                "password": hash,
+                "is_admin": 1
             };
             sql.query('INSERT INTO users SET ?',
                 user, function (error, results, fields) {
