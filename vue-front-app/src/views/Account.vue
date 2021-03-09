@@ -1,5 +1,5 @@
 <template>
-  <div class="profile container">
+  <div class="profil container">
     <div class="card shadow-sm">
       <div class="text-center py-5">
         <img
@@ -18,7 +18,8 @@
           <div
             v-if="(this.$route.params.id === JSON.parse($store.state.user).id) || JSON.parse(this.$store.state.user).is_admin == 1"
           >
-            <button class="btn btn-danger" @click="deleteUser">
+            <button class="btn btn-danger" data-toggle="modal"
+                        data-target="#deleteConfirm">
               Supprimer mon compte
             </button>
           </div>
@@ -26,11 +27,48 @@
       </div>
     </div>
     <Userpost />
+    <div
+      class="modal fade"
+      id="deleteConfirm"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="deleteConfirm"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Attention !</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Êtes-vous sur de vouloir supprimer votre compte ?
+          </div>
+            
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" data-dismiss="modal">
+              Annuler
+            </button>
+            <!-- Modifier le post -->
+            <button type="button" class="btn btn-danger" @click="deleteUser">
+              Supprimer mon compte
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import UserServices from "../services/UserServices"
+import UserServices from "../services/UserServices";
 import Userpost from "../components/Userpost";
 export default {
   components: {
@@ -43,11 +81,11 @@ export default {
     };
   },
   created() {
-    this.getOneUser()
+    this.getOneUser();
   },
   methods: {
     getOneUser() {
-      console.log(JSON.parse(this.$store.state.user).is_admin)
+      console.log(JSON.parse(this.$store.state.user).is_admin);
       let userId = this.$route.params.id;
       UserServices.getOne(userId)
         .then((res) => {
@@ -58,14 +96,11 @@ export default {
         .catch((err) => err);
     },
     deleteUser() {
-      let id = JSON.parse(this.$store.state.user).id
-      UserServices.deleteOne(id)
-        .then(() => {
-          this.$store.dispatch("logout")
-              .then(() => this.$router.push("/login"));
-        })
+      let id = JSON.parse(this.$store.state.user).id;
+      UserServices.deleteOne(id).then(() => {
+        this.$store.dispatch("logout").then(() => this.$router.push("/login"));
+      });
     },
-    
   },
 };
 </script>
