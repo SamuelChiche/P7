@@ -1,8 +1,16 @@
 <template>
+  <!-- Template création de post -->
   <div class="makeapost">
     <form>
       <div class="card gedf-card">
-        <div class="card-header text-center">Postez vos envies</div>
+        <div class="card-header text-center">
+          <img
+            src="../assets/icon-left-font-black-resized.png"
+            height="75px"
+            width="225px"
+            alt=""
+          />
+        </div>
         <div class="card-body">
           <div class="tab-content" id="myTabContent">
             <div
@@ -11,8 +19,9 @@
               role="tabpanel"
               aria-label="posts-tab"
             >
+              <!-- Titre du post -->
               <div class="form-group">
-                <label for="inputTitle"></label>
+                <label class="sr-only" for="inputTitle">Titre</label>
                 <input
                   type="title"
                   class="form-control"
@@ -22,26 +31,25 @@
                   required
                 />
               </div>
+              <!-- Text du post  -->
               <div class="form-group">
-                <label class="sr-only" for="message">post</label>
-
+                <label class="sr-only" for="message">Text</label>
                 <textarea
                   class="form-control"
                   id="message"
                   rows="3"
-                  placeholder="What are you thinking?"
+                  placeholder="Exprimez vous !"
                   v-model="text"
                 ></textarea>
               </div>
+              <!-- Importer une image -->
               <div class="image-preview text-center my-3">
-                <img :src="this.image" />
+                <img :src="this.image" class="img-fluid" />
               </div>
-              <input type="file" name="file" @change="onFileSelected" />
-            </div>
-          </div>
-          <div class="btn-toolbar float-right">
-            <div class="btn-group">
-              <button @click="createPost" type="submit" class="btn btn-primary">
+              <label class="btn btn-info btn-file">
+                Ajouter une image <input type="file" name="file" @change="onFileSelected" style="display: none;"/>
+              </label>
+              <button @click="createPost" type="submit" class="btn btn-primary float-right">
                 Partager
               </button>
             </div>
@@ -66,6 +74,7 @@ export default {
     };
   },
   methods: {
+    // Récuperation de l'image uploadé et affichage
     onFileSelected(event) {
       this.selectedFile = event.target.files[0];
       let reader = new FileReader();
@@ -74,6 +83,7 @@ export default {
         this.image = e.target.result;
       };
     },
+    // Création de post
     createPost() {
       if (this.title === null) {
         alert("Un post doit contenir un titre !");

@@ -12,9 +12,6 @@
         <div class="col-md-8 col-lg-6 col-xl-5 p-0 mx-auto">
           <h4 class="font-weight-bold my-4">{{ name }}</h4>
           <hr />
-          <div class="opacity-75 mb-4">
-            {{ email }}
-          </div>
           <div
             v-if="(this.$route.params.id === JSON.parse($store.state.user).id) || JSON.parse(this.$store.state.user).is_admin == 1"
           >

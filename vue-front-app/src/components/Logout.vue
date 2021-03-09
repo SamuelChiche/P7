@@ -1,4 +1,5 @@
 <template>
+<!-- Bouton de déconnexion -->
   <a
     v-if="isLoggedIn"
     @click="logout"
@@ -14,11 +15,13 @@
 export default {
   name: "Logout",
   computed: {
+    // Récupération du status de connexion dans le store VueX
     isLoggedIn () {
       return this.$store.getters.isLoggedIn;
     },
   },
   methods: {
+    // Déconnecte l'utilisateur
     logout () {
       this.$store.dispatch("logout")
         .then(() => this.$router.push("/login"));
@@ -26,7 +29,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-
-</style>

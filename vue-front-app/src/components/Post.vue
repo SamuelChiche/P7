@@ -1,4 +1,5 @@
 <template>
+  <!-- Template post -->
   <div class="post">
     <div
       class="card gedf-card my-5"
@@ -18,6 +19,7 @@
             </div>
             <div class="ml-2">
               <div class="h5 m-0">
+                <!-- Lien vers le profile de l'auteur du post -->
                 <router-link
                   :to="{ name: 'account', params: { id: post.user_id } }"
                   >{{ post.user_name }}</router-link
@@ -26,82 +28,79 @@
             </div>
           </div>
           <div>
+            <!-- Si l'utilisateur est l'auteur du post ou est admin -->
             <div
-              class="dropdown"
               v-if="
                 post.user_id == current_user_id ||
                 JSON.parse($store.state.user).is_admin == 1
               "
             >
-              <button
-                class="btn btn-link dropdown-toggle"
-                type="button"
-                id="gedf-drop1"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              ></button>
-              <div class="dropdown-menu">
-                <li class="dropdown-item">
-                  <button
-                    @click="postEditor(post.text, post.title, post.post_id)"
-                    data-toggle="modal"
-                    data-target="#editPostModal"
-                  >
-                    Edit
-                  </button>
-                </li>
-                <li class="dropdown-item">
-                  <a @click="deletePost(post.post_id)">
-                    Supprimer <font-awesome-icon icon="trash" />
-                  </a>
-                </li>
+              <!-- Bouton modification -->
+              <div class="justify-content-between">
+                <button
+                  @click="postEditor(post.text, post.title, post.post_id)"
+                  data-toggle="modal"
+                  data-target="#editPostModal"
+                  class="btn"
+                  aria-label="edit-post"
+                >
+                  <font-awesome-icon icon="edit" />
+                </button>
+                <!-- Bouton de suppression -->
+                <button @click="deletePost(post.post_id)" class="btn" aria-label="delete-post">
+                  <font-awesome-icon icon="trash" />
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="card-body">
-        <router-link
-          :to="{ name: 'upost', params: { id: post.post_id } }"
-          class="card-link"
-        >
           <h5 class="card-title">
             {{ post.title }}
           </h5>
-        </router-link>
         <p class="card-text">
           {{ post.text }}
         </p>
+        <!-- Si il y a une image dans le post -->
         <img
           :src="post.image"
-          height="400px"
-          width="800px"
+          class="img-fluid rounded"
+          width="100%"
           v-if="post.image != undefined"
           @click="this.src = post.image"
+          alt="..."
         />
       </div>
+      <!-- Espace commentaire -->
       <div class="card-footer">
+        <!-- Ecriture d'un commentaire -->
         <section class="mt-3">
           <form>
             <div class="input-group input-group">
+              <!-- Zone de text -->
+              <label for="comment" class="sr-only">Commenter</label>
               <input
                 class="form-control"
-                placeholder="What are you thinking?"
+                type="comment"
+                placeholder="Laissez un commentaire !"
+                id="comment"
                 v-model="comment_text"
               />
               <div class="input-group-append">
+                <!-- Bouton d'envoi -->
                 <button
                   @click="createComment(post.post_id)"
                   type="submit"
                   class="text-decoration-none text-white btn btn-primary"
                 >
-                  Comment
+                  Envoyer
                 </button>
               </div>
             </div>
           </form>
         </section>
+        <!-- Affichage des commentaires correspondant au post -->
         <div>
           <div
             class="card p-2 mt-3"
@@ -119,6 +118,7 @@
                 alt="..."
               />
               <div class="flex-grow-1 pl-2">
+                <!-- Lien vers le profil de l'auteur du commentaire -->
                 <router-link
                   :to="{ name: 'account', params: { id: comment.user_id } }"
                   >{{
@@ -150,17 +150,17 @@
                   ></button>
                   <div class="dropdown-menu">
                     <li class="dropdown-item">
-                      <button
-                        @click="openModel(comment.text, comment.comment_id)"
+                      <a
+                        @click="commentEditor(comment.text, comment.comment_id)"
                         data-toggle="modal"
                         data-target="#editCommentModal"
                       >
-                        sd
-                      </button>
+                        Modifier
+                      </a>
                     </li>
                     <li class="dropdown-item">
                       <a @click="deleteComment(comment.comment_id)">
-                        Supprimer <font-awesome-icon icon="trash" />
+                        Supprimer
                       </a>
                     </li>
                   </div>
@@ -216,6 +216,7 @@
             <button type="button" class="btn btn-danger" data-dismiss="modal">
               Fermer
             </button>
+            <!-- Modifier le commentaire -->
             <button
               type="button"
               class="btn btn-primary"
@@ -252,9 +253,7 @@
           <div class="modal-body">
             <form>
               <div class="form-group">
-                <label for="message-text" class="col-form-label"
-                  >Titre:</label
-                >
+                <label for="message-text" class="col-form-label">Titre:</label>
                 <input
                   class="form-control"
                   id="message-text"
@@ -278,11 +277,8 @@
             <button type="button" class="btn btn-danger" data-dismiss="modal">
               Fermer
             </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="editPost()"
-            >
+            <!-- Modifier le post -->
+            <button type="button" class="btn btn-primary" @click="editPost()">
               Sauvegarder les modifications
             </button>
           </div>
@@ -293,6 +289,7 @@
 </template>
 
 <script>
+// Importation des appels API
 import PostServices from "../services/PostServices";
 import CommentServices from "../services/CommentServices";
 import UserServices from "../services/UserServices";
@@ -302,17 +299,17 @@ export default {
   components: {},
   data() {
     return {
-      posts_list: [],
       comment_text: null,
       comment_edit: null,
       comment_edit_id: null,
       comments_list: [],
       users_list: [],
+      posts_list: [],
       current_user_id: JSON.parse(this.$store.state.user).id,
       post_edit_text: null,
-      post_edit_title : null,
+      post_edit_title: null,
       post_edit_id: null,
-    };
+    }
   },
   created() {
     // Méthodes appliquées à la création de la page
@@ -363,23 +360,25 @@ export default {
     deleteComment(id) {
       CommentServices.delete(id).then(window.location.reload());
     },
-    postEditor(post_text, post_title, id){
-      this.post_edit_id = id
-      this.post_edit_text = post_text
-      this.post_edit_title = post_title
+    // Ouverture de l'editeur de post
+    postEditor(post_text, post_title, id) {
+      this.post_edit_id = id;
+      this.post_edit_text = post_text;
+      this.post_edit_title = post_title;
     },
+    // Modification d'un post
     editPost() {
-      let id = this.post_edit_id
-      let text = this.post_edit_text
-      let title = this.post_edit_title
+      let id = this.post_edit_id;
+      let text = this.post_edit_text;
+      let title = this.post_edit_title;
       let data = {
         title,
-        text
-      }
+        text,
+      };
       PostServices.edit(id, data).then(window.location.reload());
     },
     // Récupération de valeurs lors de l'ouverture de l'editeur de commentaire
-    openModel(comment, id) {
+    commentEditor(comment, id) {
       this.comment_edit_id = id;
       this.comment_edit = comment;
     },
@@ -393,6 +392,11 @@ export default {
       CommentServices.edit(id, data).then(window.location.reload());
     },
   },
-  computed: {},
 };
 </script>
+<style lang="scss">
+  a {
+    color : black;
+    
+  }
+</style>
