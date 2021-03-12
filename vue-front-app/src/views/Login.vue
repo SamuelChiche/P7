@@ -29,7 +29,7 @@
         />
       </div>
       <!--  -->
-      <button type="submit" class="btn btn-primary">Se connecter</button>
+      <button type="submit" class="btn btn-blue">Se connecter</button>
     </form>
     <div>
           Pas encore de compte ? <router-link to="/signup">S'inscrire</router-link>
@@ -61,3 +61,10 @@ export default {
     },
 }
 </script>
+<style lang="scss" scoped>
+  a {
+    color : #0054AD;
+    font-weight: bold;
+    
+  }
+</style>

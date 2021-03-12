@@ -44,12 +44,12 @@
               </div>
               <!-- Importer une image -->
               <div class="image-preview text-center my-3">
-                <img :src="this.image" class="img-fluid" />
+                <img :src="this.image" class="img-fluid" alt=""/>
               </div>
-              <label class="btn btn-info btn-file">
+              <label class="btn btn-blue btn-file">
                 Ajouter une image <input type="file" name="file" @change="onFileSelected" style="display: none;"/>
               </label>
-              <button @click="createPost" type="submit" class="btn btn-primary float-right">
+              <button @click="createPost" type="submit" class="btn btn-blue float-right">
                 Partager
               </button>
             </div>

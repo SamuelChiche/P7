@@ -2,12 +2,12 @@
   <div class="sign-up container">
     <form v-on:submit.prevent="register">
       <div class="form-group">
-        <label for="inputName">Name</label>
+        <label for="inputName">Nom d'utilisateur</label>
         <input
           type="name"
           class="form-control"
-          id="name"
-          placeholder="Name"
+          id="inputName"
+          placeholder="Nom d'utilisateur"
           required
           v-model="name"
         />
@@ -17,36 +17,24 @@
         <input
           type="email"
           class="form-control"
-          id="email"
+          id="inputEmail"
           placeholder="Email"
           required
           v-model="email"
         />
       </div>
       <div class="form-group">
-        <label for="inputPassword">Password</label>
+        <label for="inputPassword">Mot de passe</label>
         <input
           type="password"
           class="form-control"
-          id="password"
-          placeholder="Password"
+          id="inputPassword"
+          placeholder="Mot de passe"
           required
           v-model="password"
         />
       </div>
-      <div class="form-group">
-        <label for="inputPassword">Password confirmation</label>
-        <input
-          type="password"
-          class="form-control"
-          id="password-confirm"
-          placeholder="Repeat Password"
-          required
-          v-model="password_confirmation"
-        />
-      </div>
-
-      <button type="submit" class="btn btn-primary">S'inscrire</button>
+      <button type="submit" class="btn btn-blue">S'inscrire</button>
     </form>
     <div>
       Déjà inscrit ? <router-link to="/login">Se connecter</router-link>
@@ -60,7 +48,6 @@ export default {
       name: "",
       email: "",
       password: "",
-      password_confirmation: "",
       message: "",
     };
   },
@@ -79,3 +66,9 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+  a {
+    color : #0054AD;
+    font-weight: bold;
+  }
+</style>
