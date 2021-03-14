@@ -5,13 +5,17 @@ import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex)
 
+// VueX Store
 export default new Vuex.Store({
+    // Stockage du status de connexion, du token d'authentification ainsi que des données de l'utilisateur
     state: {
         status: '',
         token: '',
         user : {},
     },
+    // Utilisation de Persisted State pour conserver le store lors de la fermeture ou du rafraichissement de la page
     plugins: [createPersistedState()],
+    // Mutations effectuées suivant les résultats obtenus lors de la connexion / inscription
     mutations: {
         auth_request(state) {
             state.status = 'loading'
@@ -30,6 +34,7 @@ export default new Vuex.Store({
         },
     },
     actions: {
+        // Méthode de connexion
         login({ commit }, userlogs) {
             return new Promise((resolve, reject) => {
                 commit('auth_request')
@@ -47,6 +52,7 @@ export default new Vuex.Store({
                     })
             })
         },
+        // Méthode d'inscription
         register({ commit }, userlogs) {
             return new Promise((resolve, reject) => {
                 commit('auth_request')
@@ -64,6 +70,7 @@ export default new Vuex.Store({
                     })
             })
         },
+        // Méthode de déconnexion
         logout({ commit }) {
             return new Promise((resolve, reject) => {
                 commit('logout')
@@ -74,6 +81,7 @@ export default new Vuex.Store({
             })
         }
     },
+    // Outils pour verifier facilement le status de connexion de l'utilsateur
     getters: {
         isLoggedIn: state => !!state.token,
         authStatus: state => state.status,

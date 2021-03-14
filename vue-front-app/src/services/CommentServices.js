@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+//Appels API pour les commentaires
 class CommentServices {
     getAll(){
         return axios.get("http://localhost:3000/comment")

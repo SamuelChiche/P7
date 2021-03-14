@@ -5,6 +5,7 @@ import Home from "../views/Home.vue"
 
 Vue.use(VueRouter)
 
+//Routes de l'application avec VueRouter
 const routes = [
   {
     path: '/',
@@ -55,6 +56,7 @@ const router = new VueRouter({
   routes
 })
 
+// Vérification du status de connexion de l'utilisateur et redirection si nécessaire
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (store.getters.isLoggedIn == true) {

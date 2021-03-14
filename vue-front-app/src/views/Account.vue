@@ -1,35 +1,42 @@
 <template>
+<!-- Page profil -->
   <div class="profil container">
+    <!-- Partie profile -->
     <div class="card shadow-sm">
       <div class="text-center py-5">
+        <!-- Photo de l'utilisateur -->
         <img
           src="../assets/blank-profile-picture.png"
           alt=""
           class="rounded-circle shadow-sm"
           height="200px"
         />
-
+        <!-- Nom de l'utilisateur -->
         <div class="col-md-8 col-lg-6 col-xl-5 p-0 mx-auto">
           <h4 class="font-weight-bold my-4">{{ name }}</h4>
           <hr />
+          <!-- Si l'utilsateur est le détenteur du compte ou est admin -->
           <div
             v-if="(this.$route.params.id === JSON.parse($store.state.user).id) || JSON.parse(this.$store.state.user).is_admin == 1"
           >
+            <!-- Bouton permettant la suppresion du compte -->
             <button class="btn btn-danger" data-toggle="modal"
-                        data-target="#deleteConfirm">
+                        data-target="#deleteUserConfirm">
               Supprimer mon compte
             </button>
           </div>
         </div>
       </div>
     </div>
+    <!-- Userpost composant / Partie post -->
     <Userpost />
+    <!-- Modal confiramation suppression -->
     <div
       class="modal fade"
-      id="deleteConfirm"
+      id="deleteUserConfirm"
       tabindex="-1"
       role="dialog"
-      aria-labelledby="deleteConfirm"
+      aria-labelledby="deleteUserConfirm"
       aria-hidden="true"
     >
       <div class="modal-dialog" role="document">
@@ -53,7 +60,7 @@
             <button type="button" class="btn btn-info" data-dismiss="modal">
               Annuler
             </button>
-            <!-- Modifier le post -->
+            <!-- Supprimer le compte -->
             <button type="button" class="btn btn-danger" @click="deleteUser">
               Supprimer mon compte
             </button>
@@ -65,8 +72,10 @@
 </template>
 
 <script>
+// Importation composants
 import UserServices from "../services/UserServices";
 import Userpost from "../components/Userpost";
+
 export default {
   components: {
     Userpost,
@@ -77,10 +86,12 @@ export default {
       email: "",
     };
   },
+  // Méthode appliqué au chargement de la page
   created() {
     this.getOneUser();
   },
   methods: {
+    // Récuperation de l'utilisateur
     getOneUser() {
       console.log(JSON.parse(this.$store.state.user).is_admin);
       let userId = this.$route.params.id;
@@ -92,6 +103,7 @@ export default {
         })
         .catch((err) => err);
     },
+    // Supression du compte utilisateur
     deleteUser() {
       let id = JSON.parse(this.$store.state.user).id;
       UserServices.deleteOne(id).then(() => {

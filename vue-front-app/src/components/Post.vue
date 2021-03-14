@@ -47,7 +47,13 @@
                   <font-awesome-icon icon="edit" />
                 </button>
                 <!-- Bouton de suppression -->
-                <button @click="deletePost(post.post_id)" class="btn" aria-label="delete-post">
+                <button
+                  @click="postDeletionConfirm(post.post_id)"
+                  class="btn"
+                  aria-label="delete-post"
+                  data-toggle="modal"
+                  data-target="#deleteConfirm"
+                >
                   <font-awesome-icon icon="trash" />
                 </button>
               </div>
@@ -56,9 +62,9 @@
         </div>
       </div>
       <div class="card-body">
-          <h5 class="card-title">
-            {{ post.title }}
-          </h5>
+        <h5 class="card-title">
+          {{ post.title }}
+        </h5>
         <p class="card-text">
           {{ post.text }}
         </p>
@@ -92,7 +98,7 @@
                 <button
                   @click="createComment(post.post_id)"
                   type="submit"
-                  class="text-decoration-none text-white btn btn-primary"
+                  class="text-decoration-none text-white btn btn-blue"
                 >
                   Envoyer
                 </button>
@@ -278,8 +284,46 @@
               Fermer
             </button>
             <!-- Modifier le post -->
-            <button type="button" class="btn btn-primary" @click="editPost()">
+            <button type="button" class="btn btn-blue" @click="editPost()">
               Sauvegarder les modifications
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal confiramation suppression -->
+    <div
+      class="modal fade"
+      id="deleteConfirm"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="deleteConfirm"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Attention !</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Êtes-vous sur de vouloir supprimer ce post ?
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" data-dismiss="modal">
+              Annuler
+            </button>
+            <!-- Supprimer le compte -->
+            <button type="button" class="btn btn-danger" @click="deletePost">
+              Supprimer le post
             </button>
           </div>
         </div>
@@ -309,7 +353,8 @@ export default {
       post_edit_text: null,
       post_edit_title: null,
       post_edit_id: null,
-    }
+      post_delete_id: null,
+    };
   },
   created() {
     // Méthodes appliquées à la création de la page
@@ -329,17 +374,19 @@ export default {
     },
     // Récupération des commentaires
     getAllComments() {
-      CommentServices.getAll().then((res) => {
-        this.comments_list = res.data;
-        console.log(this.comments_list);
-      });
+      CommentServices.getAll()
+        .then((res) => {
+          this.comments_list = res.data;
+        })
+        .catch((err) => err);
     },
     // Récupération des utilisateurs
     getAllUsers() {
-      UserServices.getAll().then((res) => {
-        this.users_list = res.data;
-        console.log(this.users_list);
-      });
+      UserServices.getAll()
+        .then((res) => {
+          this.users_list = res.data;
+        })
+        .catch((err) => err);
     },
     // Création d'un commentaire
     createComment(post_id) {
@@ -350,15 +397,25 @@ export default {
         post_id,
         text,
       };
-      CommentServices.create(data);
+      CommentServices.create(data)
+        .then((res) => res)
+        .catch((err) => err);
+    },
+    postDeletionConfirm(id) {
+      this.post_delete_id = id;
     },
     // Suppression d'un post
-    deletePost(id) {
-      PostServices.delete(id).then(window.location.reload());
+    deletePost() {
+      let id = this.post_delete_id;
+      PostServices.delete(id)
+        .then(window.location.reload())
+        .catch((err) => err);
     },
     // Suppression d'un commentaire
     deleteComment(id) {
-      CommentServices.delete(id).then(window.location.reload());
+      CommentServices.delete(id)
+        .then(window.location.reload())
+        .catch((err) => err);
     },
     // Ouverture de l'editeur de post
     postEditor(post_text, post_title, id) {
@@ -375,7 +432,9 @@ export default {
         title,
         text,
       };
-      PostServices.edit(id, data).then(window.location.reload());
+      PostServices.edit(id, data)
+        .then(window.location.reload())
+        .catch((err) => err);
     },
     // Récupération de valeurs lors de l'ouverture de l'editeur de commentaire
     commentEditor(comment, id) {
@@ -389,14 +448,15 @@ export default {
       let data = {
         text,
       };
-      CommentServices.edit(id, data).then(window.location.reload());
+      CommentServices.edit(id, data)
+        .then(window.location.reload())
+        .catch((err) => err);
     },
   },
 };
 </script>
-<style lang="scss">
-  a {
-    color : black;
-    
-  }
+<style lang="scss" scoped>
+a {
+  color: black;
+}
 </style>
