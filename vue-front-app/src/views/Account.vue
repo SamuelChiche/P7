@@ -21,7 +21,7 @@
           >
             <!-- Bouton permettant la suppresion du compte -->
             <button class="btn btn-danger" data-toggle="modal"
-                        data-target="#deleteConfirm">
+                        data-target="#deleteUserConfirm">
               Supprimer mon compte
             </button>
           </div>
@@ -33,10 +33,10 @@
     <!-- Modal confiramation suppression -->
     <div
       class="modal fade"
-      id="deleteConfirm"
+      id="deleteUserConfirm"
       tabindex="-1"
       role="dialog"
-      aria-labelledby="deleteConfirm"
+      aria-labelledby="deleteUserConfirm"
       aria-hidden="true"
     >
       <div class="modal-dialog" role="document">

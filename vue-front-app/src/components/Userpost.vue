@@ -75,6 +75,7 @@
           class="img-fluid rounded"
           v-if="post.image != undefined"
           @click="this.src = post.image"
+          width="100%"
         />
       </div>
       <div class="card-footer">
